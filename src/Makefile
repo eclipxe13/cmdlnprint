@@ -1,5 +1,5 @@
 ADDON_BASE_NAME   = cmdlnprint
-ADDON_VERSION     = 0.5.4
+ADDON_VERSION     = 0.5.5
 
 DIST = ../dist
 
@@ -19,6 +19,9 @@ FILES = chrome.manifest \
 ADDON_PATH = $(DIST)/$(ADDON_BASE_NAME)_$(ADDON_VERSION)_.xpi
 
 all : $(ADDON_PATH)
+
+install : $(ADDON_PATH)
+	firefox $(ADDON_PATH) &
 
 $(ADDON_PATH) : $(FILES) $(MANIFEST_PATH)
 	zip -r0 $(ADDON_PATH) $(FILES) $(MANIFEST_PATH)

@@ -73,7 +73,7 @@ function startup() {
     }
     catch (e) {
       /* print error page, if possible */
-      window.setTimeout(onPrintPageShow, 100);
+      window.setTimeout(onPrintPageLoadComplete, 100);
     }
   }
   else
@@ -233,7 +233,25 @@ function printWithCanvas() {
   savePNG(canvas, outputFilePath(2));
 }
 
-function onPrintPageShow() {
+function onPrintPageShow(aEvent) {
+  if (getBrowser().contentDocument.readyState == "complete") {
+    onPrintPageLoadComplete();
+  }
+  else {
+    getBrowser().contentDocument
+                .addEventListener("readystatechange",
+                                  onDocumentReadyStateChange,
+                                  false);
+  }
+}
+
+function onDocumentReadyStateChange(aEvent) {
+  if (getBrowser().contentDocument.readyState == "complete") {
+    onPrintPageLoadComplete();
+  }
+}
+
+function onPrintPageLoadComplete() {
 
   if (window.arguments && window.arguments[3]) {
     var delay = parseInt(window.arguments[3]);
@@ -241,13 +259,13 @@ function onPrintPageShow() {
       delay = 0;
     if (delay > 120)
       delay = 120;
-    setTimeout(delayedPrintPageShow, delay * 1000);
+    setTimeout(delayedPrintPageLoadComplete, delay * 1000);
   }
   else
-    delayedPrintPageShow();
+    delayedPrintPageLoadComplete();
 }
 
-function delayedPrintPageShow() {
+function delayedPrintPageLoadComplete() {
   if (gLocked)
     return;
   else
