@@ -1,0 +1,8 @@
+<!ENTITY prefwindow.title   "Command Line Print">
+<!ENTITY filename.label     "Default file name">
+<!ENTITY filename.accesskey "f">
+<!ENTITY mode.label         "Default mode">
+<!ENTITY mode.accesskey     "m">
+<!ENTITY timeout.label      "Timeout">
+<!ENTITY timeout.accesskey     "T">
+<!ENTITY seconds.label      "seconds">

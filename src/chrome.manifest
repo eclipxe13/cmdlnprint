@@ -1,0 +1,8 @@
+content cmdlnprint chrome/content/
+locale cmdlnprint en-US chrome/locale/en-US/
+component {80edd604-4028-4c89-a1c1-6e1f25bfa5a7} components/cmdlnprint.js
+contract @forums.mozillazine.org/development/cmdlnprint;1 {80edd604-4028-4c89-a1c1-6e1f25bfa5a7}
+category command-line-handler cmdlnpr @forums.mozillazine.org/development/cmdlnprint;1
+#  I wonder why prefs and plugins are not required to register here.
+#  Anyway, CID/ContractID/Category are chrome, in the first place?
+
