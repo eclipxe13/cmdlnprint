@@ -28,6 +28,7 @@
             <menuitem label="PDF" value="1"/>
             <menuitem label="PNG" value="2"/>
             <menuitem label="PostScript" value="3"/>
+            <menuitem label="Text" value="4"/>
           </menupopup>
         </menulist>
       </hbox>

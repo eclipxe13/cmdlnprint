@@ -15,7 +15,8 @@ var gPrintProgressListener = {
                                aMaxTotalProgress){},
   onLocationChange : function (aWebProgress,
                                aRequest,
-                               aLocation){},
+                               aLocation,
+                               aFlags){},
 
   onStatusChange : function (aWebProgress,
                              aRequest,
@@ -28,6 +29,29 @@ var gPrintProgressListener = {
   /* nsISupports */
   QueryInterface : function progress_qi(aIID) {
     if (!aIID.equals(Components.interfaces.nsISupports) &&
+        !aIID.equals(Components.interfaces.nsISupportsWeakReference) &&
+        !aIID.equals(Components.interfaces.nsIWebProgressListener))
+      throw Components.results.NS_ERROR_NO_INTERFACE;
+
+    return this;
+  }
+};
+
+var gBrowserProgressListener = {
+  onLocationChange : function (aWebProgress, aRequest, aLocation, aFlags) {
+    if (Components.interfaces
+                  .nsIWebProgressListener
+                  .LOCATION_CHANGE_ERROR_PAGE & aFlags) {
+      // At this point, LOAD_BACKGROUND is set, so from now on, no event will
+      // be fired.
+      setTimeout(onPrintPageLoadComplete, 100);
+    }
+  },
+
+  /* nsISupports */
+  QueryInterface : function progress_qi(aIID) {
+    if (!aIID.equals(Components.interfaces.nsISupports) &&
+        !aIID.equals(Components.interfaces.nsISupportsWeakReference) &&
         !aIID.equals(Components.interfaces.nsIWebProgressListener))
       throw Components.results.NS_ERROR_NO_INTERFACE;
 
@@ -63,6 +87,13 @@ function savePNG(aCanvas, aPath) {
 }
 
 function startup() {
+  sizeToContent();
+  getBrowser().webProgress
+              .addProgressListener(gBrowserProgressListener,
+                                   Components.interfaces
+                                             .nsIWebProgress
+                                             .NOTIFY_LOCATION);
+
   getBrowser().addEventListener("pageshow", onPrintPageShow, false);
   
   var uri = (window.arguments)? window.arguments[0] : "";
@@ -156,6 +187,17 @@ function outputFilePath(aMode) {
     case 3:
       ext = "ps";
       break;
+    case 4:
+      if (/^text\/html/i.test(content.document.contentType)) {
+        ext = "html";
+      }
+      else if (/xml/i.test(content.document.contentType)) {
+        ext = "xml";
+      }
+      else {
+        ext = "txt";
+      }
+      break;
     }
 
     fileLeaf = fileLeaf.replace("%EXT%", ext);
@@ -166,7 +208,7 @@ function outputFilePath(aMode) {
 
   }
   catch(e) {
-    fileLeaf = "foo";
+    fileLeaf = "cmdlnprint.default.dat";
   }
 
   var file = Components.classes["@mozilla.org/download-manager;1"]
@@ -207,7 +249,7 @@ function printWithCanvas() {
      17px on WindowsXP, but this may depends on client theme or something.
      I guess the real width would be 16, plus extra 1px border for drop-
      -shadow.
-     XXX FIX ME!
+     XXX FIXME!
    */
   if (content.scrollMaxX)
     canvasHeight -= 17;
@@ -224,24 +266,20 @@ function printWithCanvas() {
   var ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-  ctx.save();
   ctx.scale(1, 1);
   ctx.drawWindow(content, 0, 0, canvasWidth, canvasHeight,
                  "rgb(128,128,128)");
-  ctx.restore();
-//  document.documentElement.appendChild(canvas);
   savePNG(canvas, outputFilePath(2));
 }
 
 function onPrintPageShow(aEvent) {
   if (getBrowser().contentDocument.readyState == "complete") {
-    onPrintPageLoadComplete();
+    setTimeout(onPrintPageLoadComplete, 0);
   }
   else {
-    getBrowser().contentDocument
-                .addEventListener("readystatechange",
-                                  onDocumentReadyStateChange,
-                                  false);
+    content.document.addEventListener("readystatechange",
+                                      onDocumentReadyStateChange,
+                                      false);
   }
 }
 
@@ -274,14 +312,49 @@ function delayedPrintPageLoadComplete() {
   var mode = printmode();
 
   if (mode == 2) {
-    /*
-       Note: What we really should do is listen to "EndDocumentLoad" event, 
-       as well as ROC's sample.
-       http://weblogs.mozillazine.org/roc/archives/2005/05/rendering_web_p.html
-       According to browser.js, EndDocumentLoad is in the same flow as
-       nsIWebProgressListener::onStateChange.
-     */
     setTimeout(printWithCanvas, 100);
+    return;
+  }
+  else if (mode == 4) {
+    var file = Components.classes["@mozilla.org/file/local;1"]
+                       .createInstance(Components.interfaces.nsILocalFile);
+    file.initWithPath(outputFilePath(4));
+
+    var io = Components.classes["@mozilla.org/network/io-service;1"]
+                       .getService(Components.interfaces.nsIIOService);
+
+    var persist =
+      Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
+                .createInstance(Components.interfaces.nsIWebBrowserPersist);
+  
+    persist.persistFlags =
+      Components.interfaces.nsIWebBrowserPersist
+                .PERSIST_FLAGS_REPLACE_EXISTING_FILES |
+      Components.interfaces.nsIWebBrowserPersist
+                .PERSIST_FLAGS_BYPASS_CACHE |
+      Components.interfaces.nsIWebBrowserPersist
+                .PERSIST_FLAGS_FIXUP_ORIGINAL_DOM |
+      Components.interfaces.nsIWebBrowserPersist
+                .PERSIST_FLAGS_FIXUP_LINKS_TO_DESTINATION |
+      Components.interfaces.nsIWebBrowserPersist
+                .PERSIST_FLAGS_SERIALIZE_OUTPUT |
+      Components.interfaces.nsIWebBrowserPersist
+                .PERSIST_FLAGS_FIXUP_LINKS_TO_DESTINATION |
+      Components.interfaces.nsIWebBrowserPersist
+                .PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
+  
+    persist.progressListener = gPrintProgressListener;
+    persist.saveDocument(content.document, file, null, null,
+                         Components.interfaces.nsIWebBrowserPersist
+                                   .ENCODE_FLAGS_ABSOLUTE_LINKS |
+                         Components.interfaces.nsIWebBrowserPersist
+                                   .ENCODE_FLAGS_ENCODE_W3C_ENTITIES, 0);
+    return;
+  }
+
+  // We can't convert from XUL to printable format.  
+  if (content.document.contentType = "text/xul") {
+    delayedShutdown();
     return;
   }
 

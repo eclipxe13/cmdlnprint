@@ -27,7 +27,7 @@
            src="about:blank"
            flex="1"
            disablehistory="true"
-           style="min-height : 600px; min-width : 800px;"
+           style="min-height : 600px; min-width : 1200px;"
            onclick="event.preventDefault();"
            />
 </window>

@@ -1,10 +1,7 @@
 ADDON_BASE_NAME   = cmdlnprint
-ADDON_VERSION     = 0.5.5
-
-DIST = ../dist
+ADDON_VERSION     = ${shell cat version.txt}
 
 MANIFEST_PATH = install.rdf
-
 FILES = chrome.manifest \
         chrome/content/mininav.xul \
         chrome/content/mininav.js \
@@ -16,21 +13,24 @@ FILES = chrome.manifest \
         defaults/preferences/cmdlnprintSettings.js \
         $(NULL)
 
+
+DIST = ../dist
+
 ADDON_PATH = $(DIST)/$(ADDON_BASE_NAME)_$(ADDON_VERSION)_.xpi
 
 all : $(ADDON_PATH)
 
 install : $(ADDON_PATH)
-	firefox $(ADDON_PATH) &
+	firefox $< &
 
 $(ADDON_PATH) : $(FILES) $(MANIFEST_PATH)
-	zip -r0 $(ADDON_PATH) $(FILES) $(MANIFEST_PATH)
+	zip -r0 $@ $^
 
-$(MANIFEST_PATH) : install.rdf.in
-	cat install.rdf.in | \
-	sed 's/@@ADDON_VERSION@@/$(ADDON_VERSION)/' \
-	> $(MANIFEST_PATH)
+$(MANIFEST_PATH) : install.rdf.in version.txt
+	cat $< | sed 's/@@ADDON_VERSION@@/$(ADDON_VERSION)/' > $@
 
 clean :
 	rm -f $(DIST)/*.xpi $(MANIFEST_PATH)
+
+.PHONY : all clean install
 

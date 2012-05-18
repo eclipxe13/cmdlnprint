@@ -78,6 +78,13 @@ function resolveModeInternal(aArgument) {
     case "postscript":
       mode = 3;
       break;
+    case "4":
+    case "html":
+    case "text":
+    case "htm":
+    case "txt":
+      mode = 4;
+      break;
     case "0":
     case "printer":
       mode = 0;
