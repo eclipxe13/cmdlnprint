@@ -353,7 +353,8 @@ function delayedPrintPageLoadComplete() {
   }
 
   // We can't convert from XUL to printable format.  
-  if (content.document.contentType == "text/xul") {
+  if (content.document.contentType == "text/xul" ||
+      content.document.contentType == "application/vnd.mozilla.xul+xml") {
     delayedShutdown();
     return;
   }
