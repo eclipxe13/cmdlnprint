@@ -303,6 +303,54 @@ function onPrintPageLoadComplete() {
     delayedPrintPageLoadComplete();
 }
 
+
+function setupOtherPreferences(settings) {
+    if (window.arguments.length < 6) return;
+    
+    // orientation
+    var aOrientation = (window.arguments[5]) ? window.arguments[5] : "default";
+    settings.orientation =
+        (aOrientation == "portrait") ? settings.kPortraitOrientation :
+        (aOrientation == "landscape") ? settings.kLandscapeOrientation :
+        settings.orientation ;
+    // printBGColors
+    var aBGColors = (window.arguments[6]) ? window.arguments[6] : "default";
+    settings.printBGColors =
+        (aBGColors == "yes") ? true :
+        (aBGColors == "no") ? false :
+        settings.printBGColors ;
+    // printBGImages
+    var aBGImages = (window.arguments[7]) ? window.arguments[7] : "default";
+    settings.printBGImages =
+        (aBGImages == "yes") ? true :
+        (aBGImages == "no") ? false :
+        settings.printBGImages ;
+    // shrinkToFit
+    var aShrinkToFit = (window.arguments[8]) ? window.arguments[8] : "default";
+    settings.shrinkToFit =
+        (aShrinkToFit == "yes") ? true :
+        (aShrinkToFit == "no") ? false :
+        settings.shrinkToFit ;
+    // setup headers ?
+    if ("yes" == window.arguments[9]) {
+        settings.headerStrLeft = window.arguments[10];
+        settings.headerStrCenter = window.arguments[11];
+        settings.headerStrRight = window.arguments[12];
+    }    
+    // setup footers ?
+    if ("yes" == window.arguments[13]) {
+        settings.footerStrLeft = window.arguments[14];
+        settings.footerStrCenter = window.arguments[15];
+        settings.footerStrRight = window.arguments[16];
+    }
+    // range
+    if ("yes" == window.arguments[17]) {
+        settings.printRange = settings.kRangeSpecifiedPageRange;
+        settings.startPageRange = parseInt(window.arguments[18], 10);
+        settings.endPageRange = parseInt(window.arguments[19], 10);
+    }
+}
+
 function delayedPrintPageLoadComplete() {
   if (gLocked)
     return;
@@ -397,9 +445,11 @@ function delayedPrintPageLoadComplete() {
   case 0:
     printSettingsService.initPrintSettingsFromPrinter
       (printerName, settings);
-
+    
     printSettingsService.initPrintSettingsFromPrefs
       (settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
+    
+    setupOtherPreferences(settings);
     break;
   case 1:
   case 3:
@@ -414,7 +464,8 @@ function delayedPrintPageLoadComplete() {
     /* We have no interest on those other than prefs. */
     printSettingsService.initPrintSettingsFromPrefs
       (settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
-
+    
+    setupOtherPreferences(settings);
     settings.printerName = null;
 
     /* settings for PDF. */

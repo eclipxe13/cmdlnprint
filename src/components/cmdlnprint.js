@@ -123,9 +123,66 @@ var gComponent = {
       param = aCmdLine.handleFlagWithParam("printprinter", false);
       var printer = param;
       
+      param = aCmdLine.handleFlagWithParam("printorientation", false);
+      var printorientation = (param == "portrait" || param == "landscape") ? param : "default" ;
+      
+      param = aCmdLine.handleFlagWithParam("printbgcolors", false);
+      var printbgcolors = (param == "yes" || param == "no") ? param : "default" ;
+      
+      param = aCmdLine.handleFlagWithParam("printbgimages", false);
+      var printbgimages = (param == "yes" || param == "no") ? param : "default" ;
+      
+      param = aCmdLine.handleFlagWithParam("printshrinktofit", false);
+      var printshrinktofit = (param == "yes" || param == "no") ? param : "default" ;
+      
+      var printheaderleft = "";
+      var printheadercenter = "";
+      var printheaderright = "";
+      var printfooterleft = "";
+      var printfootercenter = "";
+      var printfooterright = "";
+      
+      param = aCmdLine.handleFlagWithParam("printsetupheader", false);
+      var printsetupheader = (param == "yes" || param == "no") ? param : "no" ;
+      if (printsetupheader == "yes") {
+          printheaderleft = aCmdLine.handleFlagWithParam("printheaderleft", false);
+          printheadercenter = aCmdLine.handleFlagWithParam("printheadercenter", false);
+          printheaderright = aCmdLine.handleFlagWithParam("printheaderright", false);
+      }
+      
+      param = aCmdLine.handleFlagWithParam("printsetupfooter", false);
+      var printsetupfooter = (param == "yes" || param == "no") ? param : "no" ;
+      if (printsetupfooter == "yes") {
+          printfooterleft = aCmdLine.handleFlagWithParam("printfooterleft", false);
+          printfootercenter = aCmdLine.handleFlagWithParam("printfootercenter", false);
+          printfooterright = aCmdLine.handleFlagWithParam("printfooterright", false);
+      }
+      
+      var startpagerange = 0;
+      var endpagerange = 0;
+      param = aCmdLine.handleFlagWithParam("printpagerange", false);
+      var printpagerange = (param == "yes" || param == "no") ? param : "no" ;
+      if (printpagerange == "yes") {
+          startpagerange = aCmdLine.handleFlagWithParam("printrangestart", false);
+          endpagerange = aCmdLine.handleFlagWithParam("printrangeend", false);
+          if (isNaN(startpagerange) || isNaN(endpagerange)) {
+              printpagerange == "no";
+          } else {
+              startpagerange = parseInt(startpagerange, 10);
+              endpagerange = parseInt(endpagerange, 10);
+              if (startpagerange > endpagerange) {
+                  printpagerange == "no";
+              }
+          }
+      }
+      
       openWindow(null, "chrome://cmdlnprint/content/mininav.xul", "_blank",
                  "chrome,dialog=no,all",
-                [uri.spec, mode.toString(), path, delay, printer]);
+                [uri.spec, mode.toString(), path, delay, printer,
+                printorientation, printbgcolors, printbgimages, printshrinktofit,
+                printsetupheader, printheaderleft, printheadercenter, printheaderright,
+                printsetupfooter, printfooterleft, printfootercenter, printfooterright,
+                printpagerange, startpagerange.toString(), endpagerange.toString()]);
     }
   },
 
