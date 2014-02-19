@@ -176,13 +176,46 @@ var gComponent = {
           }
       }
       
+      param = aCmdLine.handleFlagWithParam("custompaper", false);
+      var custompaper = (param == "yes" || param == "no") ? param : "no" ;
+      var custompaperunits = "mm";
+      var custompaperwidth = 215.9;
+      var custompaperheight = 279.4;
+      if (custompaper == "yes") {
+          param = aCmdLine.handleFlagWithParam("custompaperunits", false);
+          custompaperunits = (param == "in" || param == "mm") ? param : "mm" ;
+          custompaperwidth = aCmdLine.handleFlagWithParam("custompaperwidth", false);
+          custompaperheight = aCmdLine.handleFlagWithParam("custompaperheight", false);
+          if (isNaN(custompaperwidth) || isNaN(custompaperheight)) {
+              custompaper = "no";
+          } else {
+              custompaperwidth = parseFloat(custompaperwidth);
+              custompaperheight = parseFloat(custompaperheight);
+              if (custompaperwidth <= 0 || custompaperheight <= 0) {
+                  custompaper = "no";
+              }
+          }
+      }
+      
+      param = aCmdLine.handleFlagWithParam("margintop", false);
+      var margintop = (isNaN(param) || parseFloat(param) < 0) ? "no" : param;
+      param = aCmdLine.handleFlagWithParam("marginright", false);
+      var marginright = (isNaN(param) || parseFloat(param) < 0) ? "no" : param;
+      param = aCmdLine.handleFlagWithParam("marginbottom", false);
+      var marginbottom = (isNaN(param) || parseFloat(param) < 0) ? "no" : param;
+      param = aCmdLine.handleFlagWithParam("marginleft", false);
+      var marginleft = (isNaN(param) || parseFloat(param) < 0) ? "no" : param;
+            
       openWindow(null, "chrome://cmdlnprint/content/mininav.xul", "_blank",
-                 "chrome,dialog=no,all",
-                [uri.spec, mode.toString(), path, delay, printer,
-                printorientation, printbgcolors, printbgimages, printshrinktofit,
-                printsetupheader, printheaderleft, printheadercenter, printheaderright,
-                printsetupfooter, printfooterleft, printfootercenter, printfooterright,
-                printpagerange, startpagerange.toString(), endpagerange.toString()]);
+                 "chrome,dialog=no,all", [
+                    uri.spec, mode.toString(), path, delay, printer,
+                    printorientation, printbgcolors, printbgimages, printshrinktofit,
+                    printsetupheader, printheaderleft, printheadercenter, printheaderright,
+                    printsetupfooter, printfooterleft, printfootercenter, printfooterright,
+                    printpagerange, startpagerange.toString(), endpagerange.toString(),
+                    custompaper, custompaperunits, custompaperwidth, custompaperheight,
+                    margintop, marginright, marginbottom, marginleft
+                 ]);
     }
   },
 

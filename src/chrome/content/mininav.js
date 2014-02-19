@@ -349,6 +349,30 @@ function setupOtherPreferences(settings) {
         settings.startPageRange = parseInt(window.arguments[18], 10);
         settings.endPageRange = parseInt(window.arguments[19], 10);
     }
+    // paper size
+    if ("yes" == window.arguments[20]) {
+        settings.paperSizeType = settings.kPaperSizeDefined;
+        settings.paperSizeUnit = (window.arguments[21] == "in") ? settings.kPaperSizeInches : settings.kPaperSizeMillimeters ;
+        settings.paperWidth = parseFloat(window.arguments[22]);
+        settings.paperHeight = parseFloat(window.arguments[23]);
+    }
+    // page margins
+    if ("no" != window.arguments[24]) {
+        settings.unwriteableMarginTop = 0;
+        settings.marginTop = parseFloat(window.arguments[24]) / ((settings.paperSizeUnit == settings.kPaperSizeInches) ? 1 : 25.4);
+    }
+    if ("no" != window.arguments[25]) {
+        settings.unwriteableMarginRight = 0;
+        settings.marginRight = parseFloat(window.arguments[25]) / ((settings.paperSizeUnit == settings.kPaperSizeInches) ? 1 : 25.4);
+    }
+    if ("no" != window.arguments[26]) {
+        settings.unwriteableMarginBottom = 0;
+        settings.marginBottom = parseFloat(window.arguments[26]) / ((settings.paperSizeUnit == settings.kPaperSizeInches) ? 1 : 25.4);
+    }
+    if ("no" != window.arguments[27]) {
+        settings.unwriteableMarginLeft = 0;
+        settings.marginLeft = parseFloat(window.arguments[27]) / ((settings.paperSizeUnit == settings.kPaperSizeInches) ? 1 : 25.4);
+    }
 }
 
 function delayedPrintPageLoadComplete() {
