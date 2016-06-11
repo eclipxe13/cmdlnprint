@@ -9,7 +9,7 @@ FILES = chrome.manifest \
         chrome/locale/en-US/mininav.dtd \
         chrome/locale/en-US/preferences.dtd \
 				chrome/license.txt \
-				chrome/skin/cmdlnprint.svg \
+				chrome/skin/cmdlnprint.png \
         components/cmdlnprint.js \
         defaults/preferences/cmdlnprintSettings.js \
         $(NULL)

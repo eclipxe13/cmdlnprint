@@ -22,7 +22,7 @@
     <em:contributor>Carlos Cortés Soto (eclipxe13@gmail.com)</em:contributor>
     <em:homepageURL>https://github.com/eclipxe13/cmdlnprint</em:homepageURL>
     <em:optionsURL>chrome://cmdlnprint/content/preferences.xul</em:optionsURL>
-    <em:iconURL>chrome://cmdlnprint/skin/cmdlnprint.svg</em:iconURL>
+    <em:iconURL>chrome://cmdlnprint/skin/cmdlnprint.png</em:iconURL>
     <em:multiprocessCompatible>true</em:multiprocessCompatible>
   </Description>
 </RDF>
