@@ -122,26 +122,26 @@ var gComponent = {
 
       param = aCmdLine.handleFlagWithParam("printprinter", false);
       var printer = param;
-      
+
       param = aCmdLine.handleFlagWithParam("printorientation", false);
       var printorientation = (param == "portrait" || param == "landscape") ? param : "default" ;
-      
+
       param = aCmdLine.handleFlagWithParam("printbgcolors", false);
       var printbgcolors = (param == "yes" || param == "no") ? param : "default" ;
-      
+
       param = aCmdLine.handleFlagWithParam("printbgimages", false);
       var printbgimages = (param == "yes" || param == "no") ? param : "default" ;
-      
+
       param = aCmdLine.handleFlagWithParam("printshrinktofit", false);
       var printshrinktofit = (param == "yes" || param == "no") ? param : "default" ;
-      
+
       var printheaderleft = "";
       var printheadercenter = "";
       var printheaderright = "";
       var printfooterleft = "";
       var printfootercenter = "";
       var printfooterright = "";
-      
+
       param = aCmdLine.handleFlagWithParam("printsetupheader", false);
       var printsetupheader = (param == "yes" || param == "no") ? param : "no" ;
       if (printsetupheader == "yes") {
@@ -149,7 +149,7 @@ var gComponent = {
           printheadercenter = aCmdLine.handleFlagWithParam("printheadercenter", false);
           printheaderright = aCmdLine.handleFlagWithParam("printheaderright", false);
       }
-      
+
       param = aCmdLine.handleFlagWithParam("printsetupfooter", false);
       var printsetupfooter = (param == "yes" || param == "no") ? param : "no" ;
       if (printsetupfooter == "yes") {
@@ -157,7 +157,7 @@ var gComponent = {
           printfootercenter = aCmdLine.handleFlagWithParam("printfootercenter", false);
           printfooterright = aCmdLine.handleFlagWithParam("printfooterright", false);
       }
-      
+
       var startpagerange = 0;
       var endpagerange = 0;
       param = aCmdLine.handleFlagWithParam("printpagerange", false);
@@ -175,7 +175,7 @@ var gComponent = {
               }
           }
       }
-      
+
       param = aCmdLine.handleFlagWithParam("custompaper", false);
       var custompaper = (param == "yes" || param == "no") ? param : "no" ;
       var custompaperunits = "mm";
@@ -196,16 +196,16 @@ var gComponent = {
               }
           }
       }
-      
+
       param = aCmdLine.handleFlagWithParam("margintop", false);
-      var margintop = (isNaN(param) || parseFloat(param) < 0) ? "no" : param;
+      var margintop = (isNaN(param) || parseFloat(param) < 0) ? "0" : param;
       param = aCmdLine.handleFlagWithParam("marginright", false);
-      var marginright = (isNaN(param) || parseFloat(param) < 0) ? "no" : param;
+      var marginright = (isNaN(param) || parseFloat(param) < 0) ? "0" : param;
       param = aCmdLine.handleFlagWithParam("marginbottom", false);
-      var marginbottom = (isNaN(param) || parseFloat(param) < 0) ? "no" : param;
+      var marginbottom = (isNaN(param) || parseFloat(param) < 0) ? "0" : param;
       param = aCmdLine.handleFlagWithParam("marginleft", false);
-      var marginleft = (isNaN(param) || parseFloat(param) < 0) ? "no" : param;
-            
+      var marginleft = (isNaN(param) || parseFloat(param) < 0) ? "0" : param;
+
       openWindow(null, "chrome://cmdlnprint/content/mininav.xul", "_blank",
                  "chrome,dialog=no,all", [
                     uri.spec, mode.toString(), path, delay, printer,
@@ -218,9 +218,7 @@ var gComponent = {
                  ]);
     }
   },
-
-  /* I wonder this helpInfo can be of any help...? */
-  helpInfo : "  -print <URL>            Start printing job.\n",
+  helpInfo : "see https://github.com/eclipxe13/cmdlnprint/\n",
   /* nsISupports */
   QueryInterface : function comp_qi(aIID) {
     if (!aIID.equals(Components.interfaces.nsISupports) &&

@@ -70,18 +70,18 @@ function savePNG(aCanvas, aPath) {
                      .getService(Components.interfaces.nsIIOService);
   var source = io.newURI(aCanvas.toDataURL("image/png", ""), null, null);
   var target = io.newFileURI(file);
-    
+
   // prepare to save the canvas data
   var persist =
     Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
               .createInstance(Components.interfaces.nsIWebBrowserPersist);
-  
+
   persist.persistFlags =
     Components.interfaces.nsIWebBrowserPersist
               .PERSIST_FLAGS_REPLACE_EXISTING_FILES |
     Components.interfaces.nsIWebBrowserPersist
               .PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
-  
+
   persist.progressListener = gPrintProgressListener;
   persist.saveURI(source, null, null, null, null, file);
 }
@@ -95,7 +95,7 @@ function startup() {
                                              .NOTIFY_LOCATION);
 
   getBrowser().addEventListener("pageshow", onPrintPageShow, false);
-  
+
   var uri = (window.arguments)? window.arguments[0] : "";
 
   if (uri){
@@ -121,7 +121,7 @@ function startup() {
   }
   catch (e) {}
 
-  window.setTimeout(window.close, timeout*1000);
+  window.setTimeout(function () { window.close(); }, timeout*1000);
 }
 
 function dateString() {
@@ -141,7 +141,7 @@ function dateString() {
     tzISO += "+";
 
   tzISO += ensureFormat(tz/60) + ensureFormat(tz%60);
-  
+
   return d.getFullYear().toString() +
          ensureFormat(d.getMonth() + 1) +
          ensureFormat(d.getDate()) + "-" +
@@ -166,7 +166,7 @@ function outputFilePath(aMode) {
                     .data;
     if (!fileLeaf)
       fileLeaf = "snapshot.%EXT%";
-      
+
     var title = getBrowser().contentDocument.title;
     if (title.length > 32)
       title = title.substring(0, 32);
@@ -306,7 +306,7 @@ function onPrintPageLoadComplete() {
 
 function setupOtherPreferences(settings) {
     if (window.arguments.length < 6) return;
-    
+
     // orientation
     var aOrientation = (window.arguments[5]) ? window.arguments[5] : "default";
     settings.orientation =
@@ -336,7 +336,7 @@ function setupOtherPreferences(settings) {
         settings.headerStrLeft = window.arguments[10];
         settings.headerStrCenter = window.arguments[11];
         settings.headerStrRight = window.arguments[12];
-    }    
+    }
     // setup footers ?
     if ("yes" == window.arguments[13]) {
         settings.footerStrLeft = window.arguments[14];
@@ -398,7 +398,7 @@ function delayedPrintPageLoadComplete() {
     var persist =
       Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
                 .createInstance(Components.interfaces.nsIWebBrowserPersist);
-  
+
     persist.persistFlags =
       Components.interfaces.nsIWebBrowserPersist
                 .PERSIST_FLAGS_REPLACE_EXISTING_FILES |
@@ -414,7 +414,7 @@ function delayedPrintPageLoadComplete() {
                 .PERSIST_FLAGS_FIXUP_LINKS_TO_DESTINATION |
       Components.interfaces.nsIWebBrowserPersist
                 .PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
-  
+
     persist.progressListener = gPrintProgressListener;
     persist.saveDocument(content.document, file, null, null,
                          Components.interfaces.nsIWebBrowserPersist
@@ -424,7 +424,7 @@ function delayedPrintPageLoadComplete() {
     return;
   }
 
-  // We can't convert from XUL to printable format.  
+  // We can't convert from XUL to printable format.
   if (content.document.contentType == "text/xul" ||
       content.document.contentType == "application/vnd.mozilla.xul+xml") {
     delayedShutdown();
@@ -469,10 +469,10 @@ function delayedPrintPageLoadComplete() {
   case 0:
     printSettingsService.initPrintSettingsFromPrinter
       (printerName, settings);
-    
+
     printSettingsService.initPrintSettingsFromPrefs
       (settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
-    
+
     setupOtherPreferences(settings);
     break;
   case 1:
@@ -488,7 +488,7 @@ function delayedPrintPageLoadComplete() {
     /* We have no interest on those other than prefs. */
     printSettingsService.initPrintSettingsFromPrefs
       (settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
-    
+
     setupOtherPreferences(settings);
     settings.printerName = null;
 
@@ -509,7 +509,7 @@ function delayedPrintPageLoadComplete() {
 }
 
 function delayedShutdown() {
-  window.setTimeout(window.close, 100);
+  window.setTimeout(function () { window.close(); }, 100);
 }
 
 

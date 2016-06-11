@@ -8,7 +8,8 @@ FILES = chrome.manifest \
         chrome/content/preferences.xul \
         chrome/locale/en-US/mininav.dtd \
         chrome/locale/en-US/preferences.dtd \
-        chrome/license.txt \
+				chrome/license.txt \
+				chrome/skin/cmdlnprint.svg \
         components/cmdlnprint.js \
         defaults/preferences/cmdlnprintSettings.js \
         $(NULL)
@@ -16,9 +17,9 @@ FILES = chrome.manifest \
 
 DIST = ../dist
 
-ADDON_PATH = $(DIST)/$(ADDON_BASE_NAME)_$(ADDON_VERSION)_.xpi
+ADDON_PATH = $(DIST)/$(ADDON_BASE_NAME)_$(ADDON_VERSION).xpi
 
-all : $(ADDON_PATH)
+build : $(ADDON_PATH)
 
 install : $(ADDON_PATH)
 	firefox $< &
@@ -32,5 +33,4 @@ $(MANIFEST_PATH) : install.rdf.in version.txt
 clean :
 	rm -f $(DIST)/*.xpi $(MANIFEST_PATH)
 
-.PHONY : all clean install
-
+.PHONY : clean build install
