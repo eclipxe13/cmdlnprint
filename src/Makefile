@@ -5,13 +5,10 @@ MANIFEST_PATH = install.rdf
 FILES = chrome.manifest \
         chrome/content/mininav.xul \
         chrome/content/mininav.js \
-        chrome/content/preferences.xul \
         chrome/locale/en-US/mininav.dtd \
-        chrome/locale/en-US/preferences.dtd \
-				chrome/license.txt \
-				chrome/skin/cmdlnprint.png \
+	chrome/license.txt \
+	chrome/skin/cmdlnprint.png \
         components/cmdlnprint.js \
-        defaults/preferences/cmdlnprintSettings.js \
         $(NULL)
 
 
