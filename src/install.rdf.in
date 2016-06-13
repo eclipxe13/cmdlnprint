@@ -18,11 +18,10 @@
     <!-- Front End MetaData -->
     <em:name>Command Line Print</em:name>
     <em:description>$ firefox -print "URL"</em:description>
-    <em:creator>O. Atsushi (torisugari@gmail.com)</em:creator>
-    <em:contributor>Carlos Cortés Soto (eclipxe13@gmail.com)</em:contributor>
+    <em:creator>Carlos Cortés Soto (eclipxe13@gmail.com)</em:creator>
+    <em:developer>O. Atsushi (torisugari@gmail.com)</em:developer>
     <em:homepageURL>https://github.com/eclipxe13/cmdlnprint</em:homepageURL>
-    <em:optionsURL>chrome://cmdlnprint/content/preferences.xul</em:optionsURL>
-    <em:iconURL>chrome://cmdlnprint/skin/cmdlnprint.svg</em:iconURL>
+    <em:iconURL>chrome://cmdlnprint/skin/cmdlnprint.png</em:iconURL>
     <em:multiprocessCompatible>true</em:multiprocessCompatible>
   </Description>
 </RDF>
