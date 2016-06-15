@@ -5,13 +5,13 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>{243cc1ee-c821-4544-aebb-54c44125b9aa}</em:id>
-    <em:version>1.0.0</em:version>
+    <em:version>1.0.1</em:version>
     <em:type>2</em:type>
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>4.0</em:minVersion>
-        <em:maxVersion>45.*</em:maxVersion>
+        <em:maxVersion>49.*</em:maxVersion>
       </Description>
     </em:targetApplication>
 
