@@ -25,12 +25,7 @@ var gComponent = {
     },
     argumentString: function(value, defaultValue) {
         if (null === value) return defaultValue;
-        try {
-            var returnValue = value;
-        } catch (ex) {
-            returnValue = defaultValue;
-        }
-        return returnValue;
+        return String(value);
     },
     argumentBoolean: function(value, defaultValue) {
         if (null === value) return defaultValue;
@@ -89,7 +84,7 @@ var gComponent = {
             headerLeft: this.argumentString(cmdline.handleFlagWithParam('print-header-left', false), ''),
             headerCenter: this.argumentString(cmdline.handleFlagWithParam('print-header-center', false), ''),
             headerRight: this.argumentString(cmdline.handleFlagWithParam('print-header-right', false), ''),
-            footer: cmdline.handleFlagWithParam('print-footer', false),
+            footer: this.argumentBoolean(cmdline.handleFlagWithParam('print-footer', false), 'no'),
             footerLeft: this.argumentString(cmdline.handleFlagWithParam('print-footer-left', false), ''),
             footerCenter: this.argumentString(cmdline.handleFlagWithParam('print-footer-center', false), ''),
             footerRight: this.argumentString(cmdline.handleFlagWithParam('print-footer-right', false), ''),
@@ -177,7 +172,7 @@ var gComponent = {
         && !aIID.equals(Components.interfaces.nsIFactory)) {
             throw Components.results.NS_ERROR_NO_INTERFACE;
         }
-            
+
         return this;
     },
     /* nsIFactory */
