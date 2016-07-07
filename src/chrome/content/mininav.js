@@ -13,7 +13,7 @@ var gPrintProgressListener = {
         // don't implement
     },
     onSecurityChange: function (aWebProgress, aRequest, aState) {
-        // don't implement        
+        // don't implement
     },
     /* nsISupports */
     QueryInterface: function progress_qi(aIID) {
@@ -113,14 +113,10 @@ function saveCanvas(canvas, path) {
 }
 
 function startup() {
-    console.log(window.arguments);
     sizeToContent();
     getBrowser().webProgress.addProgressListener(gBrowserProgressListener, Components.interfaces .nsIWebProgress .NOTIFY_LOCATION);
-
     getBrowser().addEventListener('pageshow', onPrintPageShow, false);
-
     var uri = window.arguments[0];
-
     if (uri) {
         try {
             getBrowser().loadURI(uri);
@@ -145,7 +141,7 @@ function printWithCanvas() {
     var canvasHeight = content.scrollMaxY + content.innerHeight;
     /*
      Remove offset from scrollbar width.
-     
+
      17px on WindowsXP, but this may depends on client theme or something.
      I guess the real width would be 16, plus extra 1px border for drop-
      -shadow.
@@ -161,7 +157,7 @@ function printWithCanvas() {
     canvas.style.height = canvasHeight + 'px';
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
-    
+
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.scale(1, 1);
@@ -253,19 +249,19 @@ function setupOtherPreferences(settings) {
     }
     // page margins (are always in inches)
     var mmToInches = (settings.paperSizeUnit === settings.kPaperSizeInches) ? 1 : 25.4;
-    if ('yes' !== window.arguments[24]) {
+    if ('' !== window.arguments[24]) {
         settings.unwriteableMarginTop = 0;
         settings.marginTop = parseFloat(window.arguments[24]) / mmToInches;
     }
-    if ('yes' !== window.arguments[25]) {
+    if ('' !== window.arguments[25]) {
         settings.unwriteableMarginRight = 0;
         settings.marginRight = parseFloat(window.arguments[25]) / mmToInches;
     }
-    if ('yes' === window.arguments[26]) {
+    if ('' !== window.arguments[26]) {
         settings.unwriteableMarginBottom = 0;
         settings.marginBottom = parseFloat(window.arguments[26]) / mmToInches;
     }
-    if ('yes' === window.arguments[27]) {
+    if ('' !== window.arguments[27]) {
         settings.unwriteableMarginLeft = 0;
         settings.marginLeft = parseFloat(window.arguments[27]) / mmToInches;
     }
