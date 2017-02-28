@@ -1,0 +1,19 @@
+{
+  "_comment": "DO NOT USE THIS FILE; USE MAKEFILE INSTEAD",
+  "title": "Command Line Print",
+  "name": "cmdlnprint",
+  "id": "{243cc1ee-c821-4544-aebb-54c44125b9aa}",
+  "version": "0.0.0",
+  "description": "$ firefox -print \"URL\"",
+  "main": "components/cmdlnprint.js",
+  "author": "Carlos Cortés Soto (eclipxe13@gmail.com)",
+  "icon": "chrome://cmdlnprint/skin/cmdlnprint.png",
+  "homepage": "https://github.com/eclipxe13/cmdlnprint",
+  "engines": {
+    "firefox": ">=4.0"
+  },
+  "license": "GPL-3.0",
+  "keywords": [
+    "jetpack"
+  ]
+}

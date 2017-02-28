@@ -1,0 +1,25 @@
+language: node_js
+node_js:
+  - stable
+
+env:
+  global:
+    - DISPLAY=:99.0
+    
+addons:
+  apt:
+    packages:
+    - ca-certificates
+    - sharutils
+
+before_install:
+- cd ..
+- sh -e /etc/init.d/xvfb start
+- npm install -g jpm
+ 
+before_script:
+- cd $TRAVIS_BUILD_DIR/src
+
+script:
+- jpm run --binary-args '-print https://google.com/ -print-mode pdf -print-file /tmp/test.pdf'
+- cat /tmp/test.pdf | uuencode test.pdf

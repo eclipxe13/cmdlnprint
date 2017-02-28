@@ -22,6 +22,7 @@ install : $(ADDON_PATH)
 	firefox $< &
 
 $(ADDON_PATH) : $(FILES) $(MANIFEST_PATH)
+	mkdir -p $(DIST)
 	zip -r0 $@ $^
 
 $(MANIFEST_PATH) : install.rdf.in version.txt
