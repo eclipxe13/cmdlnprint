@@ -77,39 +77,42 @@ function saveDocumentAsHtml()
             .ENCODE_FLAGS_ENCODE_W3C_ENTITIES, 0);
 }
 
-// See http://developer.mozilla.org/en/docs/Code_snippets:Canvas
 function saveCanvas(canvas, path) {
-    var file = Components.classes['@mozilla.org/file/local;1']
-            .createInstance(Components.interfaces.nsILocalFile);
-    file.initWithPath(path);
-    var io = Components.classes['@mozilla.org/network/io-service;1']
-            .getService(Components.interfaces.nsIIOService);
-    var source = io.newURI(canvas.toDataURL('image/png', ''), null, null);
-    var target = io.newFileURI(file);
-    // prepare to save the canvas data
-    var persist =
-            Components.classes['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']
-            .createInstance(Components.interfaces.nsIWebBrowserPersist);
-    persist.persistFlags =
-            Components.interfaces.nsIWebBrowserPersist
-            .PERSIST_FLAGS_REPLACE_EXISTING_FILES |
-            Components.interfaces.nsIWebBrowserPersist
-            .PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
-    persist.progressListener = gPrintProgressListener;
-    /* void saveURI(
-        in nsIURI aURI,
-        in nsISupports aCacheKey,
-        in nsIURI aReferrer,
-        in long aReferrerPolicy,
-        in nsIInputStream aPostData,
-        in string aExtraHeaders,
-        in nsISupports aFile,
-        in nsILoadContext aPrivacyContext
-      );
-     */
+    // Convert the Canvas to a Binary Stream
     try {
-        persist.saveURI(source, null, null, null, null, null, target);
-    } catch (ex) {}
+        var io = Components.classes['@mozilla.org/network/io-service;1']
+            .getService(Components.interfaces.nsIIOService);
+        // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIIOService#newChannelFromURI2()
+        var dataChannel = io.newChannelFromURI2(
+            io.newURI(canvas.toDataURL('image/png', 1), null, null), // aURI
+            null, // Services.scriptSecurityManager.getSystemPrincipal(), // aLoadingNode
+            null, // aLoadingPrincipal
+            null, // aTriggeringPrincipal
+            Components.interfaces.nsILoadInfo.SEC_NORMAL, // aSecurityFlags
+            Components.interfaces.nsIContentPolicy.TYPE_OTHER // aContentPolicyType
+        );
+        var binStream = Components.classes["@mozilla.org/binaryinputstream;1"]
+            .createInstance(Components.interfaces.nsIBinaryInputStream);
+        binStream.setInputStream(dataChannel.open());
+        var file = Components.classes['@mozilla.org/file/local;1']
+            .createInstance(Components.interfaces.nsILocalFile);
+        file.initWithPath(path);
+        var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].
+            createInstance(Components.interfaces.nsIFileOutputStream);
+        foStream.init(file, 0x02 | 0x08 | 0x20, 0x1B6, 0);
+        const kMaxBlockSize = 65536;
+        var remaining = binStream.available();
+        while (remaining > 0) {
+            var count = (remaining > kMaxBlockSize) ? kMaxBlockSize : remaining;
+            var b = binStream.readBytes(count);
+            foStream.write(b, count);
+            remaining -= count;
+        }
+        foStream.close();
+        delayedShutdown();
+    } catch (ex) {
+        console.log(ex);
+    }
 }
 
 function startup() {
@@ -197,6 +200,10 @@ function onPrintPageLoadComplete() {
     }
 }
 
+/**
+ * @var nsIPrintSettings settings
+ * http://stage.oxymoronical.com/experiments/xpcomref/applications/Firefox/3.5/interfaces/nsIPrintSettings
+ */
 function setupOtherPreferences(settings) {
     // orientation
     var aOrientation = (window.arguments[5]) ? window.arguments[5] : 'default';
@@ -241,38 +248,62 @@ function setupOtherPreferences(settings) {
         settings.endPageRange = parseInt(window.arguments[19], 10);
     }
     // paper size
+    // unwriteable margins
+    settings.unwriteableMarginTop = 0;
+    settings.unwriteableMarginRight = 0;
+    settings.unwriteableMarginBottom = 0;
+    settings.unwriteableMarginLeft = 0;
     if ('yes' === window.arguments[20]) {
         settings.paperSizeType = settings.kPaperSizeDefined;
         settings.paperSizeUnit = (window.arguments[21] === 'in') ? settings.kPaperSizeInches : settings.kPaperSizeMillimeters;
         settings.paperWidth = parseFloat(window.arguments[22]);
         settings.paperHeight = parseFloat(window.arguments[23]);
+    } else {
+        if (window.arguments[21] === 'mm' && settings.paperSizeUnit !== settings.kPaperSizeMillimeters) {
+            settings.paperWidth = parseFloat(settings.paperWidth) * 25.4;
+            settings.paperHeight = parseFloat(settings.paperHeight) * 25.4;
+        }
+        if (window.arguments[21] === 'in' && settings.paperSizeUnit !== settings.kPaperSizeInches) {
+            settings.paperWidth = parseFloat(settings.paperWidth) / 25.4;
+            settings.paperHeight = parseFloat(settings.paperHeight) / 25.4;
+        }
+        settings.paperSizeUnit = (window.arguments[21] === 'in') ? settings.kPaperSizeInches : settings.kPaperSizeMillimeters;
     }
-    // page margins (are always in inches)
     var mmToInches = (settings.paperSizeUnit === settings.kPaperSizeInches) ? 1 : 25.4;
+    // page margins (are always in inches)
     if ('' !== window.arguments[24]) {
-        settings.unwriteableMarginTop = 0;
         settings.marginTop = parseFloat(window.arguments[24]) / mmToInches;
     }
     if ('' !== window.arguments[25]) {
-        settings.unwriteableMarginRight = 0;
         settings.marginRight = parseFloat(window.arguments[25]) / mmToInches;
     }
     if ('' !== window.arguments[26]) {
-        settings.unwriteableMarginBottom = 0;
         settings.marginBottom = parseFloat(window.arguments[26]) / mmToInches;
     }
     if ('' !== window.arguments[27]) {
-        settings.unwriteableMarginLeft = 0;
         settings.marginLeft = parseFloat(window.arguments[27]) / mmToInches;
+    }
+    // page edges (are always in inches)
+    if ('' !== window.arguments[28]) {
+        settings.edgeTop = parseFloat(window.arguments[28]) / mmToInches;
+    }
+    if ('' !== window.arguments[29]) {
+        settings.edgeRight = parseFloat(window.arguments[29]) / mmToInches;
+    }
+    if ('' !== window.arguments[30]) {
+        settings.edgeBottom = parseFloat(window.arguments[30]) / mmToInches;
+    }
+    if ('' !== window.arguments[31]) {
+        settings.edgeLeft = parseFloat(window.arguments[31]) / mmToInches;
     }
 }
 
 function delayedPrintPageLoadComplete() {
     if (gLocked) {
         return;
-    } else {
-        gLocked = true;
     }
+    var printInfo = ('yes' === window.arguments[32]);
+    gLocked = true;
     var mode = window.arguments[1];
     // attend png and html modes
     if (mode === 'png') {
@@ -289,14 +320,11 @@ function delayedPrintPageLoadComplete() {
     }
 
     /* printing API */
-    var webBrowserPrint =
-            content.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-            .getInterface(Components.interfaces.nsIWebBrowserPrint);
     var printSettingsService =
             Components.classes['@mozilla.org/gfx/printsettings-service;1']
             .getService(Components.interfaces.nsIPrintSettingsService);
 
-    /* sigh, layout needs printPreview for currentPrintSettings.  */
+    // http://stage.oxymoronical.com/experiments/xpcomref/applications/Firefox/3.5/interfaces/nsIPrintSettings
     var settings = printSettingsService.newPrintSettings;
     switch (mode) {
         case 'printer':
@@ -347,9 +375,15 @@ function delayedPrintPageLoadComplete() {
     /* setup other preferences */
     setupOtherPreferences(settings);
     settings.printSilent = true;
+    printInfo && console.log(settings);
     try {
+        var webBrowserPrint =
+                content.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                .getInterface(Components.interfaces.nsIWebBrowserPrint);
         webBrowserPrint.print(settings, gPrintProgressListener);
-    } catch (e) {}
+    } catch (ex) {
+        console.log(ex);
+    }
 }
 
 function delayedShutdown() {
