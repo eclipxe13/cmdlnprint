@@ -32,9 +32,9 @@ firefox -print <URL>
 
 ## Options
 
-- -print-mode: pdf|png|ps|postscript|html|htm|text|txt|<printer-name>
-- -print-file filename: output file, try to use absolute paths
-- -print-delay number: seconds to wait before printing
+- -print-mode: pdf|png|ps|postscript|html|htm|text|txt|<printer-name>, default printer
+- -print-file filename: output file, use absolute paths
+- -print-delay number: seconds to wait before printing, default 0
 - -print-printer printer: if '' (empty string) or 'default' then will lookup for your current default printer
 - -print-orientation: portrait, landscape or default
 - -print-bgcolors: yes, no or default
@@ -59,6 +59,25 @@ firefox -print <URL>
 - -print-margin-right number, default 0.4
 - -print-margin-bottom number, default 0.4
 - -print-margin-left number, default 0.4
+- -print-edge-top number, default 0
+- -print-edge-right number, default 0
+- -print-edge-bottom number, default 0
+- -print-edge-left number, default 0
+
+### About paper size, edges and margins
+
+These are rules followed by the plugin that may help you when printing.
+- The unwritable margins are always zero.
+- The parameter print-paper-units defines the units of size, edges and margins
+- The size of the paper is defined by print-paper-custom, print-paper-width and print-paper-height
+  If no custom paper is defined then it uses the default
+- The edges (top, right, bottom and left) define the position of the header and footer
+- The margins (top, right, bottom and left) define the position of the content
+
+## Get information about the execution
+
+If the option `-print-info yes` is set then it will print the options readed and also the
+settings object in the console. Add also the parameter `-jsconsole`.
 
 ## Authors
 
@@ -74,8 +93,8 @@ https://github.com/eclipxe13/cmdlnprint/
 
 ## Help wanted
 
-If you have experience creating and building firefox extensions, could you please consider mentor me or
-help me in order to maintain this extension?
+If you have experience creating and building firefox extensions,
+could you please consider mentor me or help me maintaining this extension?
 
 ## License
 

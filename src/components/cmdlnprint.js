@@ -28,16 +28,17 @@ var gComponent = {
         return String(value);
     },
     argumentBoolean: function(value, defaultValue) {
-        if (null === value) return defaultValue;
-        var returnValue = defaultValue;
+        if (null === value) {
+            return defaultValue;
+        }
         value = value.toLowerCase();
         if (value === 'yes' || value === 'y' || value === '1') {
-            returnValue = 'yes';
+            return 'yes';
         }
         if (value === 'no' || value === 'n' || value === '0') {
-            returnValue = 'no';
+            return 'no';
         }
-        return returnValue;
+        return defaultValue;
     },
     argumentMode: function(value, defaultValue) {
         if (null === value) return defaultValue;
@@ -71,34 +72,39 @@ var gComponent = {
     handle: function comp_hadle(cmdline) {
         // capture every param, do not change the order since in this order are passed to the mininav window
         var options = {
-            print: this.argumentString(cmdline.handleFlagWithParam('print', false), ''),
-            mode: this.argumentMode(cmdline.handleFlagWithParam('print-mode', false), 'printer'),
-            file: this.argumentString(cmdline.handleFlagWithParam('print-file', false), ''),
-            delay: this.argumentFloat(cmdline.handleFlagWithParam('print-delay', false), 0),
-            printer: this.argumentString(cmdline.handleFlagWithParam('print-printer', false), ''),
-            orientation: this.argumentString(cmdline.handleFlagWithParam('print-orientation', false), ''),
-            bgcolors: this.argumentBoolean(cmdline.handleFlagWithParam('print-bgcolors', false), ''),
-            bgimages: this.argumentBoolean(cmdline.handleFlagWithParam('print-bgimages', false), ''),
-            shrinktofit: this.argumentBoolean(cmdline.handleFlagWithParam('print-shrinktofit', false), ''),
-            header: this.argumentBoolean(cmdline.handleFlagWithParam('print-header', false), 'no'),
-            headerLeft: this.argumentString(cmdline.handleFlagWithParam('print-header-left', false), ''),
-            headerCenter: this.argumentString(cmdline.handleFlagWithParam('print-header-center', false), ''),
-            headerRight: this.argumentString(cmdline.handleFlagWithParam('print-header-right', false), ''),
-            footer: this.argumentBoolean(cmdline.handleFlagWithParam('print-footer', false), 'no'),
-            footerLeft: this.argumentString(cmdline.handleFlagWithParam('print-footer-left', false), ''),
-            footerCenter: this.argumentString(cmdline.handleFlagWithParam('print-footer-center', false), ''),
-            footerRight: this.argumentString(cmdline.handleFlagWithParam('print-footer-right', false), ''),
-            range: this.argumentBoolean(cmdline.handleFlagWithParam('print-range', false), 'no'),
-            rangeStart: this.argumentInteger(cmdline.handleFlagWithParam('print-range-start', false), 1),
-            rangeEnd: this.argumentInteger(cmdline.handleFlagWithParam('print-range-end', false), 1),
-            paperCustom: this.argumentBoolean(cmdline.handleFlagWithParam('print-paper-custom', false), 'no'),
-            paperUnits: this.argumentString(cmdline.handleFlagWithParam('print-paper-units', false), 'in'),
-            paperWidth: this.argumentFloat(cmdline.handleFlagWithParam('print-paper-width', false), 25.4 * 8.5),
-            paperHeight: this.argumentFloat(cmdline.handleFlagWithParam('print-paper-height', false), 25.4 * 11),
-            marginTop: this.argumentFloat(cmdline.handleFlagWithParam('print-margin-top', false), 0.4),
-            marginRight: this.argumentFloat(cmdline.handleFlagWithParam('print-margin-right', false), 0.4),
-            marginBottom: this.argumentFloat(cmdline.handleFlagWithParam('print-margin-bottom', false), 0.4),
-            marginLeft: this.argumentFloat(cmdline.handleFlagWithParam('print-margin-left', false), 0.4)
+            print: this.argumentString(cmdline.handleFlagWithParam('print', false), ''),                          // 0
+            mode: this.argumentMode(cmdline.handleFlagWithParam('print-mode', false), 'printer'),                 // 1
+            file: this.argumentString(cmdline.handleFlagWithParam('print-file', false), ''),                      // 2
+            delay: this.argumentFloat(cmdline.handleFlagWithParam('print-delay', false), 0),                      // 3
+            printer: this.argumentString(cmdline.handleFlagWithParam('print-printer', false), ''),                // 4
+            orientation: this.argumentString(cmdline.handleFlagWithParam('print-orientation', false), ''),        // 5
+            bgcolors: this.argumentBoolean(cmdline.handleFlagWithParam('print-bgcolors', false), ''),             // 6
+            bgimages: this.argumentBoolean(cmdline.handleFlagWithParam('print-bgimages', false), ''),             // 7
+            shrinktofit: this.argumentBoolean(cmdline.handleFlagWithParam('print-shrinktofit', false), ''),       // 8
+            header: this.argumentBoolean(cmdline.handleFlagWithParam('print-header', false), 'no'),               // 9
+            headerLeft: this.argumentString(cmdline.handleFlagWithParam('print-header-left', false), ''),         // 10
+            headerCenter: this.argumentString(cmdline.handleFlagWithParam('print-header-center', false), ''),     // 11
+            headerRight: this.argumentString(cmdline.handleFlagWithParam('print-header-right', false), ''),       // 12
+            footer: this.argumentBoolean(cmdline.handleFlagWithParam('print-footer', false), 'no'),               // 13
+            footerLeft: this.argumentString(cmdline.handleFlagWithParam('print-footer-left', false), ''),         // 14
+            footerCenter: this.argumentString(cmdline.handleFlagWithParam('print-footer-center', false), ''),     // 15
+            footerRight: this.argumentString(cmdline.handleFlagWithParam('print-footer-right', false), ''),       // 16
+            range: this.argumentBoolean(cmdline.handleFlagWithParam('print-range', false), 'no'),                 // 17
+            rangeStart: this.argumentInteger(cmdline.handleFlagWithParam('print-range-start', false), 1),         // 18
+            rangeEnd: this.argumentInteger(cmdline.handleFlagWithParam('print-range-end', false), 1),             // 19
+            paperCustom: this.argumentBoolean(cmdline.handleFlagWithParam('print-paper-custom', false), 'no'),    // 20
+            paperUnits: this.argumentString(cmdline.handleFlagWithParam('print-paper-units', false), 'mm'),       // 21
+            paperWidth: this.argumentFloat(cmdline.handleFlagWithParam('print-paper-width', false), 25.4 * 8.5),  // 22
+            paperHeight: this.argumentFloat(cmdline.handleFlagWithParam('print-paper-height', false), 25.4 * 11), // 23
+            marginTop: this.argumentFloat(cmdline.handleFlagWithParam('print-margin-top', false), 10),            // 24
+            marginRight: this.argumentFloat(cmdline.handleFlagWithParam('print-margin-right', false), 10),        // 25
+            marginBottom: this.argumentFloat(cmdline.handleFlagWithParam('print-margin-bottom', false), 10),      // 26
+            marginLeft: this.argumentFloat(cmdline.handleFlagWithParam('print-margin-left', false), 10),          // 27
+            edgeTop: this.argumentFloat(cmdline.handleFlagWithParam('print-edge-top', false), 10),                // 28
+            edgeRight: this.argumentFloat(cmdline.handleFlagWithParam('print-edge-right', false), 10),            // 29
+            edgeBottom: this.argumentFloat(cmdline.handleFlagWithParam('print-edge-bottom', false), 10),          // 30
+            edgeLeft: this.argumentFloat(cmdline.handleFlagWithParam('print-edge-left', false), 10),              // 31
+            info: this.argumentBoolean(cmdline.handleFlagWithParam('print-info', false), 'no')                    // 32
         };
         // exit if main -print argument was not set
         if ('' === options.print) {
@@ -145,7 +151,12 @@ var gComponent = {
             options.footerRight = '';
         }
         if ('in' !== options.paperUnits && 'mm' !== options.paperUnits) {
-            options.orientation = 'in';
+            options.paperUnits = 'in';
+        }
+        if ('yes' === options.info) {
+            for (var key in options) {
+                Components.utils.reportError(' '.repeat(16 - key.length) + key + ': ' + options[key].toString());
+            }
         }
         // options to array
         var windowArguments = this.optionsToWindowArguments(options);
