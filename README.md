@@ -74,6 +74,11 @@ These are rules followed by the plugin that may help you when printing.
 - The edges (top, right, bottom and left) define the position of the header and footer
 - The margins (top, right, bottom and left) define the position of the content
 
+### Disabling the hardware acceleration
+
+According to issue #7 [GFX1-]: D3D11 layers just crashed; D3D11 will be disabled.
+It may be helpful if you are experiencing problems to disable handware acceleration on firefox settings.
+
 ## Get information about the execution
 
 If the option `-print-info yes` is set then it will print the options readed and also the
