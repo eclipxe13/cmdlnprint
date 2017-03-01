@@ -32,10 +32,10 @@ var gComponent = {
             return defaultValue;
         }
         value = value.toLowerCase();
-        if (value === 'yes' || value === 'y' || value === '1') {
+        if (value === 'yes' || value === 'y' || value === '1' || value === 'on') {
             return 'yes';
         }
-        if (value === 'no' || value === 'n' || value === '0') {
+        if (value === 'no' || value === 'n' || value === '0' || value === 'off') {
             return 'no';
         }
         return defaultValue;
@@ -77,18 +77,18 @@ var gComponent = {
             file: this.argumentString(cmdline.handleFlagWithParam('print-file', false), ''),                      // 2
             delay: this.argumentFloat(cmdline.handleFlagWithParam('print-delay', false), 0),                      // 3
             printer: this.argumentString(cmdline.handleFlagWithParam('print-printer', false), ''),                // 4
-            orientation: this.argumentString(cmdline.handleFlagWithParam('print-orientation', false), ''),        // 5
-            bgcolors: this.argumentBoolean(cmdline.handleFlagWithParam('print-bgcolors', false), ''),             // 6
-            bgimages: this.argumentBoolean(cmdline.handleFlagWithParam('print-bgimages', false), ''),             // 7
-            shrinktofit: this.argumentBoolean(cmdline.handleFlagWithParam('print-shrinktofit', false), ''),       // 8
-            header: this.argumentBoolean(cmdline.handleFlagWithParam('print-header', false), 'no'),               // 9
-            headerLeft: this.argumentString(cmdline.handleFlagWithParam('print-header-left', false), ''),         // 10
-            headerCenter: this.argumentString(cmdline.handleFlagWithParam('print-header-center', false), ''),     // 11
-            headerRight: this.argumentString(cmdline.handleFlagWithParam('print-header-right', false), ''),       // 12
-            footer: this.argumentBoolean(cmdline.handleFlagWithParam('print-footer', false), 'no'),               // 13
-            footerLeft: this.argumentString(cmdline.handleFlagWithParam('print-footer-left', false), ''),         // 14
-            footerCenter: this.argumentString(cmdline.handleFlagWithParam('print-footer-center', false), ''),     // 15
-            footerRight: this.argumentString(cmdline.handleFlagWithParam('print-footer-right', false), ''),       // 16
+            orientation: this.argumentString(cmdline.handleFlagWithParam('print-orientation', false), 'default'),          // 5
+            bgcolors: this.argumentBoolean(cmdline.handleFlagWithParam('print-bgcolors', false), 'default'),               // 6
+            bgimages: this.argumentBoolean(cmdline.handleFlagWithParam('print-bgimages', false), 'default'),               // 7
+            shrinktofit: this.argumentBoolean(cmdline.handleFlagWithParam('print-shrinktofit', false), 'default'),         // 8
+            header: this.argumentBoolean(cmdline.handleFlagWithParam('print-header', false), 'no'),                        // 9
+            headerLeft: this.argumentString(cmdline.handleFlagWithParam('print-header-left', false), 'user_pref'),         // 10
+            headerCenter: this.argumentString(cmdline.handleFlagWithParam('print-header-center', false), 'user_pref'),     // 11
+            headerRight: this.argumentString(cmdline.handleFlagWithParam('print-header-right', false), 'user_pref'),       // 12
+            footer: this.argumentBoolean(cmdline.handleFlagWithParam('print-footer', false), 'no'),                        // 13
+            footerLeft: this.argumentString(cmdline.handleFlagWithParam('print-footer-left', false), 'user_pref'),         // 14
+            footerCenter: this.argumentString(cmdline.handleFlagWithParam('print-footer-center', false), 'user_pref'),     // 15
+            footerRight: this.argumentString(cmdline.handleFlagWithParam('print-footer-right', false), 'user_pref'),       // 16
             range: this.argumentBoolean(cmdline.handleFlagWithParam('print-range', false), 'no'),                 // 17
             rangeStart: this.argumentInteger(cmdline.handleFlagWithParam('print-range-start', false), 1),         // 18
             rangeEnd: this.argumentInteger(cmdline.handleFlagWithParam('print-range-end', false), 1),             // 19

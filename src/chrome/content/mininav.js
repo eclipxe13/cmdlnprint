@@ -229,16 +229,23 @@ function setupOtherPreferences(settings) {
             (aShrinkToFit === 'yes') ? true :
             (aShrinkToFit === 'no') ? false :
             settings.shrinkToFit;
-    // setup headers ?
-    if ('yes' === window.arguments[9]) {
+    // setup headers and footers
+    if ('no' === window.arguments[9] || 'user_pref' !== window.arguments[10]) {
         settings.headerStrLeft = window.arguments[10];
+    }
+    if ('no' === window.arguments[9] || 'user_pref' !== window.arguments[11]) {
         settings.headerStrCenter = window.arguments[11];
+    }
+    if ('no' === window.arguments[9] || 'user_pref' !== window.arguments[12]) {
         settings.headerStrRight = window.arguments[12];
     }
-    // setup footers ?
-    if ('yes' === window.arguments[13]) {
+    if ('no' === window.arguments[13] || 'user_pref' !== window.arguments[14]) {
         settings.footerStrLeft = window.arguments[14];
+    }
+    if ('no' === window.arguments[13] || 'user_pref' !== window.arguments[15]) {
         settings.footerStrCenter = window.arguments[15];
+    }
+    if ('no' === window.arguments[13] || 'user_pref' !== window.arguments[16]) {
         settings.footerStrRight = window.arguments[16];
     }
     // range
