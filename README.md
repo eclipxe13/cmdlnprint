@@ -32,41 +32,79 @@ firefox -print <URL>
 
 ## Options
 
-- -print-mode: pdf|png|ps|postscript|html|htm|text|txt|<printer-name>, default printer
-- -print-file filename: output file, use absolute paths
-- -print-delay number: seconds to wait before printing, default 0
-- -print-printer printer: if '' (empty string) or 'default' then will lookup for your current default printer
-- -print-orientation: portrait, landscape or default
-- -print-bgcolors: yes, no or default
-- -print-bgimages: yes, no or default
-- -print-shrinktofit: yes, no or default
-- -print-header: yes or no
-- -print-header-left text: text to print of header left
-- -print-header-center text: text to print of header center
-- -print-header-right text: text to print of header right
-- -print-footer: yes or no
-- -print-footer-left text: text to print of footer left
-- -print-footer-center text: text to print of footer center
-- -print-footer-right text: text to print of footer right
-- -print-range: yes or no
-- -print-range-start n: page start
-- -print-range-end n: page end
-- -print-paper-custom: yes or no, default no
-- -print-paper-units: mm or in, default in
-- -print-paper-width number: default 8.5
-- -print-paper-height number: default 11
-- -print-margin-top number, default 0.4
-- -print-margin-right number, default 0.4
-- -print-margin-bottom number, default 0.4
-- -print-margin-left number, default 0.4
-- -print-edge-top number, default 0
-- -print-edge-right number, default 0
-- -print-edge-bottom number, default 0
-- -print-edge-left number, default 0
+- `-print-mode [mode]`: pdf|png|ps|postscript|html|htm|text|txt|<printer-name>, default printer
+- `-print-file filename`: output file, use absolute paths
+- `-print-delay number`: seconds to wait before printing, default 0
+- `-print-printer printer`: if '' (empty string) or 'default' then will lookup for your current default printer
+- `-print-orientation [yes/no/default]`: portrait, landscape or default
+- `-print-bgcolors [yes/no/default]`: yes, no or default
+- `-print-bgimages [yes/no/default]`: yes, no or default
+- `-print-shrinktofit [yes/no/default]`: yes, no or default
+- `-print-header [yes/no]`: yes or no, default to "no"
+    - `-print-header-left text`: text to print of header left, default to 'user_pref'
+    - `-print-header-center text`: text to print of header center, default to 'user_pref'
+    - `-print-header-right text`: text to print of header right, default to 'user_pref'
+- `-print-footer [yes/no]`: yes or no, default to "no"
+    - `-print-footer-left text`: text to print of footer left, default to 'user_pref'
+    - `-print-footer-center text`: text to print of footer center, default to 'user_pref'
+    - `-print-footer-right text`: text to print of footer right, default to 'user_pref'
+- `-print-range [yes/no]`: define if the following parameters will be used
+    - `-print-range-start number`: page start
+    - `-print-range-end number`: page end
+- `-print-paper-custom [yes/no]`: yes or no, default no
+- `-print-paper-units [mm/in]`: mm for millimeters or in for inches, default in
+- `-print-paper-width number`: default 8.5
+- `-print-paper-height number`: default 11
+- `-print-margin-top number`: default 0.4
+- `-print-margin-right number`: default 0.4
+- `-print-margin-bottom number`: default 0.4
+- `-print-margin-left number`: default 0.4
+- `-print-edge-top number`: default 0
+- `-print-edge-right number`: default 0
+- `-print-edge-bottom number`: default 0
+- `-print-edge-left number`: default 0
+
+#### Options that uses yes/no values
+
+For no you can set: 0, off, n. For yes you can set 1, on, y.
+This are the same: `-print-header yes`, `-print-header y`, `-print-header on` or `-print-header 1`.
+
+### About header and footer
+
+The default value for `-print-header` and `-print-footer` is `"no"`.
+The only way to specify that you want a header or footer is to set the parameter
+ to a possitive value 'yes', 'y', '1', 'on'
+
+The default value for `-print-[header,footer]-[left,center,right]` is `"user_pref"`.
+When one of this parameters is equal to `"user_pref"` the plugin will simply use the
+user defined value. Otherwise, it will print the string defined in the parameter.
+
+Remember that you can use some special keywords in header and footer sections:
+
+- `&U` Page address (URL)
+- `&D` Date and time
+- `&T` Page title
+- `&P` Page number
+- `&PT` Page number with total (Example: "3 of 5")
+- `&&` A single ampersand (&)
+
+#### Examples of header and footer
+
+- `firefox -print http://example.org`
+  will not print any header or footer
+- `firefox -print http://example.org -print-header yes`
+  will take all the defaults for header but will not produce any footer
+- `firefox -print http://example.org -print-header yes -print-header-center '' -print-header-right '2017-03-01'`
+  will print header, header left will be the user preference,
+  header center will be an empty string, header right will be the date 2017-03-01, will not print any footer.
+- `firefox -print http://example.org -print-header-center "my custom title"`
+  will not print any header or footer,
+  even when `-print-header-center` was set because `-print-header yes` was not set.
 
 ### About paper size, edges and margins
 
 These are rules followed by the plugin that may help you when printing.
+
 - The unwritable margins are always zero.
 - The parameter print-paper-units defines the units of size, edges and margins
 - The size of the paper is defined by print-paper-custom, print-paper-width and print-paper-height
@@ -103,4 +141,5 @@ could you please consider mentor me or help me maintaining this extension?
 
 ## License
 
-MPL 1.1/GPL 2.0/LGPL 2.1 as shown in file src/chrome/license.txt
+MPL 1.1/GPL 2.0/LGPL 2.1 as shown in file
+[src/chrome/license.txt](https://raw.githubusercontent.com/eclipxe13/cmdlnprint/master/src/chrome/license.txt)
