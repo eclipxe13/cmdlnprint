@@ -1,3 +1,13 @@
+# version 1.0.4
+- Use the user preferences for header and footers when printing and not defining the parameter.
+  Improve issue #8 Header and Footer options don't appear to do anything.
+- Allow parameter value on/off as yes/no
+- Improve README.md:
+    - Add section for header and footer
+    - Add section for options that uses yes/no values
+    - Improve parameters list
+    - Fix license link
+
 # version 1.0.3
 - Add parameters -print-edge-top, -print-edge-right, -print-edge-bottom, -print-edge-left
   This must fix issue

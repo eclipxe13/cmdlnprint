@@ -5,7 +5,7 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>{243cc1ee-c821-4544-aebb-54c44125b9aa}</em:id>
-    <em:version>1.0.3</em:version>
+    <em:version>1.0.4</em:version>
     <em:type>2</em:type>
     <em:targetApplication>
       <Description>
