@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/eclipxe13/cmdlnprint.svg?branch=master)](https://travis-ci.org/eclipxe13/cmdlnprint)
+
 # Firefox cmdlnprint extension
 
 Addon for Firefox to automate printing using command line (silent printing).

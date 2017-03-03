@@ -1,0 +1,18 @@
+# Ignore .DS_Store files created by mac
+.DS_Store
+
+# Ignore any zip or xpi files
+*.xpi
+*.zip
+
+Makefile
+install.rdf.in
+version.txt
+
+*.hide
+
+# Ignore specific directory
+# You can start patterns with a forward slash (/) to avoid recursivity.
+# You can end patterns with a forward slash (/) to specify a directory.
+/defaults/
+/test/
