@@ -65,6 +65,8 @@ firefox -print <URL>
 - `-print-edge-right number`: default 0
 - `-print-edge-bottom number`: default 0
 - `-print-edge-left number`: default 0
+- `-print-resolution number`: default 0, used when `-print-mode printer`, pdf creation doesn't honor this parameter
+- `-print-scaling number`: default 1.0 (100%), require `-print-shrinktofit no`
 
 #### Options that uses yes/no values
 

@@ -202,6 +202,7 @@ function onPrintPageLoadComplete() {
 
 /**
  * @var nsIPrintSettings settings
+ * https://dxr.mozilla.org/mozilla-beta/source/widget/nsIPrintSettings.idl
  * http://stage.oxymoronical.com/experiments/xpcomref/applications/Firefox/3.5/interfaces/nsIPrintSettings
  */
 function setupOtherPreferences(settings) {
@@ -302,6 +303,16 @@ function setupOtherPreferences(settings) {
     }
     if ('' !== window.arguments[31]) {
         settings.edgeLeft = parseFloat(window.arguments[31]) / mmToInches;
+    }
+    // resolution
+    var aResolution = parseInt(window.arguments[33], 10);
+    if (aResolution > 0) {
+        settings.resolution = aResolution;
+    }
+    // scaling
+    var aScaling = parseFloat(window.arguments[34]);
+    if (aScaling > 0) {
+        settings.scaling = aScaling;
     }
 }
 
