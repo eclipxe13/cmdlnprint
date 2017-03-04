@@ -1,3 +1,23 @@
+# version 1.0.5
+- Fix -print-file argument handling
+    - On linux was not accepting relative urls, now it does
+    - It was causing an error to print to printer directly
+- Add -print-scaling as a float value, if non set it uses 1.0 (100%)
+- Add -print-resolution resolution
+    - resolution is an integer value, is non set is uses zero that means no change.
+    - resolution is not used on pdf files by firefox, only print to real printer
+- Modify parameter -print-info, now it does not use an argument
+- Register the logo in the skin to display in the extensions list
+- Remove unused defaults/preferences/cmdlnprintSettings.js file
+- Change components/cmdlnprint.js to use the example from
+  <https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/Providing_Command-Line_Options>
+  It will help to test and move the plugin to avoid restarts
+- Add Travis CI platform (thanks to @bdurrow)
+- Build now depends on jpm and package.json
+- Added a simple bootstrap to handle command line, no need to restart
+- Change components/cmdlnprint.js to a importable module
+- Change minimal version to 38.0a1 as default by jpm
+
 # version 1.0.4
 - Use the user preferences for header and footers when printing and not defining the parameter.
   Improve issue #8 Header and Footer options don't appear to do anything.
