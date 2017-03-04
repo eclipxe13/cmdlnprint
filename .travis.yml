@@ -21,5 +21,6 @@ before_script:
 - cd $TRAVIS_BUILD_DIR/src
 
 script:
+    - jpm xpi -v --dest-dir ../dist/ && unzip -l ../dist/*.xpi
     - jpm run --binary-args '-print tests/assets/sample.html -print-mode pdf -print-file /tmp/test.pdf'
     - cat /tmp/test.pdf | uuencode test.pdf
