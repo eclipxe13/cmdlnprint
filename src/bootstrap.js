@@ -1,11 +1,9 @@
 /* jshint moz: true */
 
-const Cu = Components.utils;
-
 let cmdlineprint;
 
 function startup(data) {
-    cmdlineprint = Cu.import("resource://cmdlnprint/components/cmdlnprint.jsm", {});
+    cmdlineprint = Components.utils.import("resource://cmdlnprint/components/cmdlnprint.jsm", {});
     cmdlineprint.startup();
 }
 
