@@ -1,13 +1,14 @@
-ADDON_BASE_NAME   = cmdlnprint
-ADDON_VERSION     = ${shell cat version.txt}
+ADDON_BASE_NAME     = cmdlnprint
+ADDON_VERSION       = ${shell cat version.txt}
+FIREFOX_MAX_VERSION = ${shell cat firefox-max-version.txt}
 
 MANIFEST_PATH = install.rdf
 FILES = chrome.manifest \
         chrome/content/mininav.xul \
         chrome/content/mininav.js \
         chrome/locale/en-US/mininav.dtd \
-	chrome/license.txt \
-	chrome/skin/cmdlnprint.png \
+        chrome/license.txt \
+        chrome/skin/cmdlnprint.png \
         components/cmdlnprint.js \
         $(NULL)
 
@@ -25,8 +26,9 @@ $(ADDON_PATH) : $(FILES) $(MANIFEST_PATH)
 	mkdir -p $(DIST)
 	zip -r0 $@ $^
 
-$(MANIFEST_PATH) : install.rdf.in version.txt
+$(MANIFEST_PATH) : install.rdf.in version.txt firefox-max-version.txt
 	cat $< | sed 's/@@ADDON_VERSION@@/$(ADDON_VERSION)/' > $@
+	cat $< | sed 's/@@FIREFOX_MAX_VERSION@@/$(FIREFOX_MAX_VERSION)/' > $@
 
 clean :
 	rm -f $(DIST)/*.xpi $(MANIFEST_PATH)
