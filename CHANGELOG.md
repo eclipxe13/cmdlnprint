@@ -1,11 +1,25 @@
+# version 1.0.6
+- Fix units, margin and edges documentation
+- Remove const Components.classes and Components.interfaces due mozilla warnings
+- Use jpm --addon-dir src/ in travis
+- Remove unnecessary .jpmignore file
+- Move Makefile to root to not be included in xpi, use --addon-dir src/ and improve build
+- Rename src/tests to src/test to not be included in xpi
+- Do not use Components.utils globally at bootstrap.js and mininav.js
+- No need to set cmdlnprint in bootstrap.js shutdown
+- No need to import Services in bootstrap.js
+- Enable multiprocess in package.json
+
 # version 1.0.5
 - Fix -print-file argument handling
-    - On linux was not accepting relative urls, now it does
+    - On linux was not accepting relative paths, now it does
     - It was causing an error to print to printer directly
 - Add -print-scaling as a float value, if non set it uses 1.0 (100%)
 - Add -print-resolution resolution
     - resolution is an integer value, is non set is uses zero that means no change.
     - resolution is not used on pdf files by firefox, only print to real printer
+- Add -print-margins to setup in one single parameter top, right, bottom and left margins
+- Add -print-edges to setup in one single parameter top, right, bottom and left edges
 - Modify parameter -print-info, now it does not use an argument
 - Register the logo in the skin to display in the extensions list
 - Remove unused defaults/preferences/cmdlnprintSettings.js file

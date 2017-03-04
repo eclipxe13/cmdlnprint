@@ -278,12 +278,12 @@ function startup(aData, aReason) {
         cmdlnPrintHandler.prototype.contractID,
         CmdlnPrintHandlerFactory
     );
-  var categoryManager = Cc["@mozilla.org/categorymanager;1"].getService(Ci.nsICategoryManager);
-  categoryManager.addCategoryEntry('command-line-handler', 'm-cmdlnprint', cmdlnPrintHandler.prototype.contractID, false, true);
+    var categoryManager = Cc["@mozilla.org/categorymanager;1"].getService(Ci.nsICategoryManager);
+    categoryManager.addCategoryEntry('command-line-handler', 'm-cmdlnprint', cmdlnPrintHandler.prototype.contractID, false, true);
 }
 
 function shutdown(aData, aReason) {
-  var categoryManager = Cc["@mozilla.org/categorymanager;1"].getService(Ci.nsICategoryManager);
-  categoryManager.deleteCategoryEntry('command-line-handler', 'm-cmdlnprint', false);
-  Cm.unregisterFactory(cmdlnPrintHandler.prototype.classID, CmdlnPrintHandlerFactory);
+    var categoryManager = Cc["@mozilla.org/categorymanager;1"].getService(Ci.nsICategoryManager);
+    categoryManager.deleteCategoryEntry('command-line-handler', 'm-cmdlnprint', false);
+    Cm.unregisterFactory(cmdlnPrintHandler.prototype.classID, CmdlnPrintHandlerFactory);
 }

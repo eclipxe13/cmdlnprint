@@ -1,6 +1,6 @@
 {
     "name": "cmdlnprint",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "id": "{243cc1ee-c821-4544-aebb-54c44125b9aa}",
     "title": "Command Line Print",
     "description": "$ firefox -print \"URL\"",
@@ -13,5 +13,7 @@
     "engines": {
         "firefox": ">=38.0a1 <=53.*"
     },
-    "permissions": ["multiprocess"]
+    "permissions": {
+        "multiprocess": true
+    }
 }
