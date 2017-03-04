@@ -5,7 +5,7 @@ node_js:
 env:
   global:
     - DISPLAY=:99.0
-    
+
 addons:
   apt:
     packages:
@@ -16,7 +16,7 @@ before_install:
 - cd ..
 - sh -e /etc/init.d/xvfb start
 - npm install -g jpm
- 
+
 before_script:
 - cd $TRAVIS_BUILD_DIR/src
 
