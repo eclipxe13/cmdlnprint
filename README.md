@@ -1,14 +1,12 @@
+# Firefox cmdlnprint extension
+
 [![Release](https://img.shields.io/github/release/eclipxe13/cmdlnprint.svg)](https://github.com/eclipxe13/cmdlnprint/releases)
 [![Build](https://img.shields.io/travis/eclipxe13/cmdlnprint/master.svg)](https://travis-ci.org/eclipxe13/cmdlnprint/branches)
 [![Mozilla Add-on Users](https://img.shields.io/amo/users/cmdlnprint.svg)](https://addons.mozilla.org/es/firefox/addon/cmdlnprint/)
 [![Mozilla Add-on Downloads](https://img.shields.io/amo/d/cmdlnprint.svg)](https://addons.mozilla.org/es/firefox/addon/cmdlnprint/)
 
-# Firefox cmdlnprint extension
-
 Addon for Firefox to automate printing using command line (silent printing).
-
 You can print to a normal printer configured at your system or print as a file (pdf, ps or png).
-
 Get it from Mozilla Addons: <https://addons.mozilla.org/en-US/firefox/addon/cmdlnprint/>
 
 ## Why this plugin exists?
