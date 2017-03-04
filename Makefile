@@ -1,13 +1,14 @@
-PACKAGE          = package.json
+ADDONDIR         = src
+PACKAGE          = $(ADDONDIR)/package.json
 ADDON_BASE_NAME  = ${shell grep -oP '"name"\s*:\s*"\K[a-zA-Z0-9.]+' $(PACKAGE)}
 ADDON_VERSION    = ${shell grep -oP '"version"\s*:\s*"\K[a-zA-Z0-9.]+' $(PACKAGE)}
-DIST             = ../dist
+DIST             = dist
 ADDON_PATH       = $(DIST)/$(ADDON_BASE_NAME)_$(ADDON_VERSION).xpi
 
 build : $(PACKAGE)
 	mkdir -p $(DIST)
 	rm -f $(DIST)/$(ADDON_BASE_NAME).xpi
-	jpm xpi -v --dest-dir $(DIST)
+	jpm xpi -v --addon-dir $(ADDONDIR) --dest-dir $(DIST)
 	mv $(DIST)/$(ADDON_BASE_NAME).xpi $(ADDON_PATH)
 
 install : $(ADDON_PATH)
