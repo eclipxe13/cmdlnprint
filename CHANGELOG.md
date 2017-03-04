@@ -1,11 +1,13 @@
 # version 1.0.5
 - Fix -print-file argument handling
-    - On linux was not accepting relative urls, now it does
+    - On linux was not accepting relative paths, now it does
     - It was causing an error to print to printer directly
 - Add -print-scaling as a float value, if non set it uses 1.0 (100%)
 - Add -print-resolution resolution
     - resolution is an integer value, is non set is uses zero that means no change.
     - resolution is not used on pdf files by firefox, only print to real printer
+- Add -print-margins to setup in one single parameter top, right, bottom and left margins
+- Add -print-edges to setup in one single parameter top, right, bottom and left edges
 - Modify parameter -print-info, now it does not use an argument
 - Register the logo in the skin to display in the extensions list
 - Remove unused defaults/preferences/cmdlnprintSettings.js file
