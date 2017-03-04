@@ -1,3 +1,15 @@
+# version 1.0.6
+- Fix units, margin and edges documentation
+- Remove const Components.classes and Components.interfaces due mozilla warnings
+- Use jpm --addon-dir src/ in travis
+- Remove unnecessary .jpmignore file
+- Move Makefile to root to not be included in xpi, use --addon-dir src/ and improve build
+- Rename src/tests to src/test to not be included in xpi
+- Do not use Components.utils globally at bootstrap.js and mininav.js
+- No need to set cmdlnprint in bootstrap.js shutdown
+- No need to import Services in bootstrap.js
+- Enable multiprocess in package.json
+
 # version 1.0.5
 - Fix -print-file argument handling
     - On linux was not accepting relative paths, now it does
