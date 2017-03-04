@@ -10,9 +10,9 @@
         onload="startup();"
         contenttitlesetting="true"
         title="&mainWindow.title;"
-        titlemodifier="&mainWindow.titlemodifier;" 
+        titlemodifier="&mainWindow.titlemodifier;"
         titlepreface=""
-        titlemenuseparator ="&mainWindow.titlemodifierseparator;">
+        titlemenuseparator="&mainWindow.titlemodifierseparator;">
    <!-- persist="screenX screenY width height sizemode" -->
   <script type="application/x-javascript">
 <![CDATA[

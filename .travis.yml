@@ -1,25 +1,29 @@
 language: node_js
 node_js:
-  - stable
+    - stable
 
 env:
-  global:
-    - DISPLAY=:99.0
-    
+    global:
+        - DISPLAY=:99.0
+
 addons:
-  apt:
-    packages:
-    - ca-certificates
-    - sharutils
+    firefox: "45.0"
+    apt:
+        packages:
+            - ca-certificates
+            - sharutils
 
 before_install:
-- cd ..
-- sh -e /etc/init.d/xvfb start
-- npm install -g jpm
- 
+    - sh -e /etc/init.d/xvfb start
+    - npm install -g jpm
+
 before_script:
-- cd $TRAVIS_BUILD_DIR/src
+    - jpm --version
+    - export FFBIN="$(which firefox)"
+    - which firefox && firefox -version && which firefox-bin && firefox-bin -version
 
 script:
-- jpm run --binary-args '-print https://google.com/ -print-mode pdf -print-file /tmp/test.pdf'
-- cat /tmp/test.pdf | uuencode test.pdf
+    - cd $TRAVIS_BUILD_DIR/src
+    - jpm xpi -v && unzip -l cmdlnprint.xpi
+    - jpm run -v --binary "${FFBIN}" --binary-args '-print tests/assets/sample.html -print-mode pdf -print-file /tmp/test.pdf'
+    - cat /tmp/test.pdf | uuencode test.pdf
