@@ -1,10 +1,14 @@
 /* jshint moz: true */
-
 const Cc = Components.classes;
 const Ci = Components.interfaces;
+const Cm = Components.manager;
+
+Cm.QueryInterface(Ci.nsIComponentRegistrar);
 
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("resource://gre/modules/Services.jsm");
+
+var EXPORTED_SYMBOLS = ["startup", "shutdown"];
 
 //
 // object definition od cmdlnPrintHandler, the cmdlnprint command line handler
@@ -12,18 +16,12 @@ Components.utils.import("resource://gre/modules/Services.jsm");
 //
 function cmdlnPrintHandler() {}
 cmdlnPrintHandler.prototype = {
+    QueryInterface: XPCOMUtils.generateQI([Ci.nsICommandLineHandler]),
     classDescription: 'cmdlnprint-command-line-handler',
     classID: Components.ID('{80edd604-4028-4c89-a1c1-6e1f25bfa5a7}'),
     contractID: '@forums.mozillazine.org/development/cmdlnprint;1',
-    _xpcom_categories: [
-        {
-            category: "command-line-handler",
-            entry: "m-cmdlnprint"
-        }
-    ],
-    QueryInterface: XPCOMUtils.generateQI([Ci.nsICommandLineHandler]),
     /* nsICommandLineHandler */
-    handle : function clh_handle(cmdLine) {
+    handle : function(cmdLine) {
         var handler = new cmdlPrintRealHandler();
         try {
             var options = handler.retrieveOptionsFromCmdLine(cmdLine);
@@ -38,6 +36,9 @@ cmdlnPrintHandler.prototype = {
                     );
                 }
             }
+            // Prevent default command line handler to prevent browser/resources from loading,
+            // like nsBrowserGlue, nsBrowserContentHandler, ...
+            // Mostly to prevent tons of jsm and frame script from loading.
             cmdLine.preventDefault = true;
             return handler.openXulWindow(handler.optionsToWindowArguments(options));
         } catch (ex) {
@@ -50,8 +51,8 @@ cmdlnPrintHandler.prototype = {
     // character 24, and lines should be wrapped at
     // 72 characters with embedded newlines,
     // and finally, the string should end with a newline
-    //        0____5____1____5____2____5
-    helpInfo: '  -print <uri>         see https://github.com/eclipxe13/cmdlnprint/ for full list of options\n',
+    helpInfo: '  -print <uri>' +
+        '         see https://github.com/eclipxe13/cmdlnprint/ for full list of options\n',
 };
 
 //
@@ -268,4 +269,21 @@ cmdlPrintRealHandler.prototype = {
     },
 };
 
-var NSGetFactory = XPCOMUtils.generateNSGetFactory([cmdlnPrintHandler]);
+const CmdlnPrintHandlerFactory = XPCOMUtils.generateNSGetFactory([cmdlnPrintHandler])(cmdlnPrintHandler.prototype.classID);
+
+function startup(aData, aReason) {
+    Cm.registerFactory(
+        cmdlnPrintHandler.prototype.classID,
+        cmdlnPrintHandler.prototype.classDescription,
+        cmdlnPrintHandler.prototype.contractID,
+        CmdlnPrintHandlerFactory
+    );
+  var categoryManager = Cc["@mozilla.org/categorymanager;1"].getService(Ci.nsICategoryManager);
+  categoryManager.addCategoryEntry('command-line-handler', 'm-cmdlnprint', cmdlnPrintHandler.prototype.contractID, false, true);
+}
+
+function shutdown(aData, aReason) {
+  var categoryManager = Cc["@mozilla.org/categorymanager;1"].getService(Ci.nsICategoryManager);
+  categoryManager.deleteCategoryEntry('command-line-handler', 'm-cmdlnprint', false);
+  Cm.unregisterFactory(cmdlnPrintHandler.prototype.classID, CmdlnPrintHandlerFactory);
+}

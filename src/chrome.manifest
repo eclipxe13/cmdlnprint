@@ -1,6 +1,4 @@
-content         cmdlnprint chrome/content/
-locale          cmdlnprint en-US chrome/locale/en-US/
-component       {80edd604-4028-4c89-a1c1-6e1f25bfa5a7} components/cmdlnprint.js
-contract        @forums.mozillazine.org/development/cmdlnprint;1 {80edd604-4028-4c89-a1c1-6e1f25bfa5a7}
-category        command-line-handler m-cmdlnprint @forums.mozillazine.org/development/cmdlnprint;1
-skin            cmdlnprint classic/1.0 chrome/skin/cmdlnprint.png
+resource    cmdlnprint .
+content     cmdlnprint chrome/content/
+locale      cmdlnprint en-US chrome/locale/en-US/
+skin        cmdlnprint classic/1.0 chrome/skin/cmdlnprint.png
