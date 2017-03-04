@@ -13,5 +13,7 @@
     "engines": {
         "firefox": ">=38.0a1 <=53.*"
     },
-    "permissions": ["multiprocess"]
+    "permissions": {
+        "multiprocess": true
+    }
 }
