@@ -7,7 +7,7 @@ ADDON_PATH       = $(DIST)/$(ADDON_BASE_NAME)_$(ADDON_VERSION).xpi
 build : $(PACKAGE)
 	mkdir -p $(DIST)
 	rm -f $(DIST)/$(ADDON_BASE_NAME).xpi
-	jpm xpi --dest-dir $(DIST)
+	jpm xpi -v --dest-dir $(DIST)
 	mv $(DIST)/$(ADDON_BASE_NAME).xpi $(ADDON_PATH)
 
 install : $(ADDON_PATH)
