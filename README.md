@@ -1,4 +1,7 @@
-[![Build Status](https://travis-ci.org/eclipxe13/cmdlnprint.svg?branch=master)](https://travis-ci.org/eclipxe13/cmdlnprint)
+[![Release](https://img.shields.io/github/release/eclipxe13/cmdlnprint.svg)](https://github.com/eclipxe13/cmdlnprint/releases)
+[![Build](https://img.shields.io/travis/eclipxe13/cmdlnprint/master.svg)](https://travis-ci.org/eclipxe13/cmdlnprint/branches)
+[![Mozilla Add-on Users](https://img.shields.io/amo/users/cmdlnprint.svg)](https://addons.mozilla.org/es/firefox/addon/cmdlnprint/)
+[![Mozilla Add-on Downloads](https://img.shields.io/amo/d/cmdlnprint.svg)](https://addons.mozilla.org/es/firefox/addon/cmdlnprint/)
 
 # Firefox cmdlnprint extension
 
@@ -6,7 +9,7 @@ Addon for Firefox to automate printing using command line (silent printing).
 
 You can print to a normal printer configured at your system or print as a file (pdf, ps or png).
 
-Get it from Mozilla Addons: https://addons.mozilla.org/en-US/firefox/addon/cmdlnprint/
+Get it from Mozilla Addons: <https://addons.mozilla.org/en-US/firefox/addon/cmdlnprint/>
 
 ## Why this plugin exists?
 
@@ -20,9 +23,10 @@ Sometimes the application cannot create the PDF,
 sometimes you don't have time to programming the report.
 
 I have seen other people explaining how they use this tool:
-- http://cfsprinter.readthedocs.io/en/latest/browser.html
-- http://forums.mozillazine.org/viewtopic.php?f=38&t=2729795
-- https://eegg.wordpress.com/2010/01/17/html-to-pdf/
+
+- <http://cfsprinter.readthedocs.io/en/latest/browser.html>
+- <http://forums.mozillazine.org/viewtopic.php?f=38&t=2729795>
+- <https://eegg.wordpress.com/2010/01/17/html-to-pdf/>
 
 It would be great for firefox to support command line printing or automation printing API.
 
@@ -35,7 +39,7 @@ firefox -print <URL>
 ## Options
 
 - `-print-mode [mode]`: pdf|png|ps|postscript|html|htm|text|txt|<printer-name>, default printer
-- `-print-file filename`: output file, use absolute paths
+- `-print-file filename`: output file, relative or absolute
 - `-print-delay number`: seconds to wait before printing, default 0
 - `-print-printer printer`: if '' (empty string) or 'default' then will lookup for your current default printer
 - `-print-orientation [yes/no/default]`: portrait, landscape or default
@@ -123,20 +127,20 @@ It may be helpful if you are experiencing problems to disable handware accelerat
 
 ## Get information about the execution
 
-If the option `-print-info yes` is set then it will print the options readed and also the
-settings object in the console. Add also the parameter `-jsconsole`.
+If the option `-print-info` is set then it will print the options readed and also the
+settings object in the console when printing or creating pdf. You should also the parameter `-jsconsole`.
 
 ## Authors
 
-* Current: Carlos C Soto https://github.com/eclipxe13
-* Original: O. Atsushi https://github.com/Torisugari
+* Current: Carlos C Soto <https://github.com/eclipxe13>
+* Original: O. Atsushi <https://github.com/Torisugari>
 
 I've been use this extension from O. Atsushi from several years, he had never answer an email
 or take care of a pull request on github, this is why I'm taking the project and giving him the credit for
 the initial release. Thanks!
 
 Feel free to contibute to this project, we are on github!
-https://github.com/eclipxe13/cmdlnprint/
+<https://github.com/eclipxe13/cmdlnprint/>
 
 ## Help wanted
 
