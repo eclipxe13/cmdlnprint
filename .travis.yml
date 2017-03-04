@@ -7,6 +7,7 @@ env:
         - DISPLAY=:99.0
 
 addons:
+    firefox: "45.0"
     apt:
         packages:
             - ca-certificates
@@ -19,7 +20,7 @@ before_install:
 before_script:
     - jpm --version
     - export FFBIN="$(which firefox)"
-    - which firefox && firefox -version
+    - which firefox && firefox -version && which firefox-bin && firefox-bin -version
 
 script:
     - cd $TRAVIS_BUILD_DIR/src
