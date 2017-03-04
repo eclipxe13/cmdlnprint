@@ -55,20 +55,22 @@ firefox -print <URL>
 - `-print-range [yes/no]`: define if the following parameters will be used
     - `-print-range-start number`: page start
     - `-print-range-end number`: page end
+- `-print-paper-units [mm/in]`: mm for millimeters or in for inches, default mm
 - `-print-paper-custom [yes/no]`: yes or no, default no
-- `-print-paper-units [mm/in]`: mm for millimeters or in for inches, default in
-- `-print-paper-width number`: default 8.5
-- `-print-paper-height number`: default 11
-- `-print-margin-top number`: default 0.4
-- `-print-margin-right number`: default 0.4
-- `-print-margin-bottom number`: default 0.4
-- `-print-margin-left number`: default 0.4
+- `-print-paper-width number`: default 215.9
+- `-print-paper-height number`: default 279.4
+- `-print-margin-top number`: default 10
+- `-print-margin-right number`: default 10
+- `-print-margin-bottom number`: default 10
+- `-print-margin-left number`: default 10
 - `-print-edge-top number`: default 0
 - `-print-edge-right number`: default 0
 - `-print-edge-bottom number`: default 0
 - `-print-edge-left number`: default 0
 - `-print-resolution number`: default 0, used when `-print-mode printer`, pdf creation doesn't honor this parameter
 - `-print-scaling number`: default 1.0 (100%), require `-print-shrinktofit no`
+- `-print-margins top,right,bottom,left`: set margins at once, default to nothing
+- `-print-edges top,right,bottom,left`: set edges at once, default to nothing
 
 #### Options that uses yes/no values
 
@@ -114,9 +116,18 @@ These are rules followed by the plugin that may help you when printing.
 - The unwritable margins are always zero.
 - The parameter print-paper-units defines the units of size, edges and margins
 - The size of the paper is defined by print-paper-custom, print-paper-width and print-paper-height
-  If no custom paper is defined then it uses the default
+  If no custom paper is defined then it uses the user preference
 - The edges (top, right, bottom and left) define the position of the header and footer
 - The margins (top, right, bottom and left) define the position of the content
+
+You can set the margins and edges at once, by example:
+
+- `-print-margins 10`: set all margins to 10
+- `-print-margins 10,20`: set margins top and bottom to 10, right and left to 20
+- `-print-margins 10,20,30`: set margins top to 10, right and left to 20, bottom to 30
+- `-print-margins 10,20,30,40`: set margins top to 10, right to 20, bottom to 30 and left to 40
+
+If you set `-print-margins` or `-print-edges` then the specific options (like `-print-margin-top`) are overriden.
 
 ### Disabling the hardware acceleration
 
