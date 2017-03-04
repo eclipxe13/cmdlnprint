@@ -1,3 +1,8 @@
+/* jshint moz: true */
+
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+
 var gLocked = false;
 var gPrintProgressListener = {
     onStateChange: function (aWebProgress, aRequest, aStateFlags, aStatus) {
@@ -17,9 +22,9 @@ var gPrintProgressListener = {
     },
     /* nsISupports */
     QueryInterface: function progress_qi(aIID) {
-        if (!aIID.equals(Components.interfaces.nsISupports)
-        && !aIID.equals(Components.interfaces.nsISupportsWeakReference)
-        && !aIID.equals(Components.interfaces.nsIWebProgressListener)) {
+        if (!aIID.equals(Ci.nsISupports) &&
+            !aIID.equals(Ci.nsISupportsWeakReference) &&
+            !aIID.equals(Ci.nsIWebProgressListener)) {
             throw Components.results.NS_ERROR_NO_INTERFACE;
         }
         return this;
@@ -28,9 +33,7 @@ var gPrintProgressListener = {
 
 var gBrowserProgressListener = {
     onLocationChange: function (aWebProgress, aRequest, aLocation, aFlags) {
-        if (Components.interfaces
-                .nsIWebProgressListener
-                .LOCATION_CHANGE_ERROR_PAGE & aFlags) {
+        if (Ci.nsIWebProgressListener.LOCATION_CHANGE_ERROR_PAGE & aFlags) {
             // At this point, LOAD_BACKGROUND is set, so from now on, no event will
             // be fired.
             setTimeout(onPrintPageLoadComplete, 100);
@@ -38,9 +41,9 @@ var gBrowserProgressListener = {
     },
     /* nsISupports */
     QueryInterface: function progress_qi(aIID) {
-        if (!aIID.equals(Components.interfaces.nsISupports)
-        && !aIID.equals(Components.interfaces.nsISupportsWeakReference)
-        && !aIID.equals(Components.interfaces.nsIWebProgressListener)) {
+        if (!aIID.equals(Ci.nsISupports) &&
+            !aIID.equals(Ci.nsISupportsWeakReference) &&
+            !aIID.equals(Ci.nsIWebProgressListener)) {
             throw Components.results.NS_ERROR_NO_INTERFACE;
         }
         return this;
@@ -49,56 +52,49 @@ var gBrowserProgressListener = {
 
 function saveDocumentAsHtml()
 {
-    var file = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
+    var file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
     file.initWithPath(window.arguments[2]);
-    var io = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);
-    var persist = Components.classes['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']
-            .createInstance(Components.interfaces.nsIWebBrowserPersist);
+    var io = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
+    var persist = Cc['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']
+            .createInstance(Ci.nsIWebBrowserPersist);
     persist.persistFlags =
-            Components.interfaces.nsIWebBrowserPersist
-            .PERSIST_FLAGS_REPLACE_EXISTING_FILES |
-            Components.interfaces.nsIWebBrowserPersist
-            .PERSIST_FLAGS_BYPASS_CACHE |
-            Components.interfaces.nsIWebBrowserPersist
-            .PERSIST_FLAGS_FIXUP_ORIGINAL_DOM |
-            Components.interfaces.nsIWebBrowserPersist
-            .PERSIST_FLAGS_FIXUP_LINKS_TO_DESTINATION |
-            Components.interfaces.nsIWebBrowserPersist
-            .PERSIST_FLAGS_SERIALIZE_OUTPUT |
-            Components.interfaces.nsIWebBrowserPersist
-            .PERSIST_FLAGS_FIXUP_LINKS_TO_DESTINATION |
-            Components.interfaces.nsIWebBrowserPersist
-            .PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
+            Ci.nsIWebBrowserPersist.PERSIST_FLAGS_REPLACE_EXISTING_FILES |
+            Ci.nsIWebBrowserPersist.PERSIST_FLAGS_BYPASS_CACHE |
+            Ci.nsIWebBrowserPersist.PERSIST_FLAGS_FIXUP_ORIGINAL_DOM |
+            Ci.nsIWebBrowserPersist.PERSIST_FLAGS_FIXUP_LINKS_TO_DESTINATION |
+            Ci.nsIWebBrowserPersist.PERSIST_FLAGS_SERIALIZE_OUTPUT |
+            Ci.nsIWebBrowserPersist.PERSIST_FLAGS_FIXUP_LINKS_TO_DESTINATION |
+            Ci.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
     persist.progressListener = gPrintProgressListener;
-    persist.saveDocument(content.document, file, null, null,
-            Components.interfaces.nsIWebBrowserPersist
-            .ENCODE_FLAGS_ABSOLUTE_LINKS |
-            Components.interfaces.nsIWebBrowserPersist
-            .ENCODE_FLAGS_ENCODE_W3C_ENTITIES, 0);
+    persist.saveDocument(
+        content.document,
+        file,
+        null,
+        null,
+        Ci.nsIWebBrowserPersist.ENCODE_FLAGS_ABSOLUTE_LINKS |
+            Ci.nsIWebBrowserPersist.ENCODE_FLAGS_ENCODE_W3C_ENTITIES,
+        0
+    );
 }
 
 function saveCanvas(canvas, path) {
     // Convert the Canvas to a Binary Stream
     try {
-        var io = Components.classes['@mozilla.org/network/io-service;1']
-            .getService(Components.interfaces.nsIIOService);
+        var io = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
         // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIIOService#newChannelFromURI2()
         var dataChannel = io.newChannelFromURI2(
             io.newURI(canvas.toDataURL('image/png', 1), null, null), // aURI
             null, // Services.scriptSecurityManager.getSystemPrincipal(), // aLoadingNode
             null, // aLoadingPrincipal
             null, // aTriggeringPrincipal
-            Components.interfaces.nsILoadInfo.SEC_NORMAL, // aSecurityFlags
-            Components.interfaces.nsIContentPolicy.TYPE_OTHER // aContentPolicyType
+            Ci.nsILoadInfo.SEC_NORMAL, // aSecurityFlags
+            Ci.nsIContentPolicy.TYPE_OTHER // aContentPolicyType
         );
-        var binStream = Components.classes["@mozilla.org/binaryinputstream;1"]
-            .createInstance(Components.interfaces.nsIBinaryInputStream);
+        var binStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(Ci.nsIBinaryInputStream);
         binStream.setInputStream(dataChannel.open());
-        var file = Components.classes['@mozilla.org/file/local;1']
-            .createInstance(Components.interfaces.nsILocalFile);
+        var file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
         file.initWithPath(path);
-        var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].
-            createInstance(Components.interfaces.nsIFileOutputStream);
+        var foStream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
         foStream.init(file, 0x02 | 0x08 | 0x20, 0x1B6, 0);
         const kMaxBlockSize = 65536;
         var remaining = binStream.available();
@@ -117,7 +113,7 @@ function saveCanvas(canvas, path) {
 
 function startup() {
     sizeToContent();
-    getBrowser().webProgress.addProgressListener(gBrowserProgressListener, Components.interfaces .nsIWebProgress .NOTIFY_LOCATION);
+    getBrowser().webProgress.addProgressListener(gBrowserProgressListener, Ci.nsIWebProgress .NOTIFY_LOCATION);
     getBrowser().addEventListener('pageshow', onPrintPageShow, false);
     var uri = window.arguments[0];
     if (uri) {
@@ -338,9 +334,7 @@ function delayedPrintPageLoadComplete() {
     }
 
     /* printing API */
-    var printSettingsService =
-            Components.classes['@mozilla.org/gfx/printsettings-service;1']
-            .getService(Components.interfaces.nsIPrintSettingsService);
+    var printSettingsService = Cc['@mozilla.org/gfx/printsettings-service;1'].getService(Ci.nsIPrintSettingsService);
 
     // http://stage.oxymoronical.com/experiments/xpcomref/applications/Firefox/3.5/interfaces/nsIPrintSettings
     var settings = printSettingsService.newPrintSettings;
@@ -349,8 +343,8 @@ function delayedPrintPageLoadComplete() {
             var printerName = ('default' === window.arguments[4]) ? printSettingsService.defaultPrinterName : '';
             /* Check whether the printer name specified by an argument is valid. */
             var list =
-                    Components.classes['@mozilla.org/gfx/printerenumerator;1']
-                    .getService(Components.interfaces.nsIPrinterEnumerator)
+                    Cc['@mozilla.org/gfx/printerenumerator;1']
+                    .getService(Ci.nsIPrinterEnumerator)
                     .printerNameList;
             while (list.hasMore()) {
                 if (window.arguments[4] === list.getNext()) {
@@ -365,7 +359,7 @@ function delayedPrintPageLoadComplete() {
             }
             /* continue with setup */
             printSettingsService.initPrintSettingsFromPrinter(printerName, settings);
-            printSettingsService.initPrintSettingsFromPrefs(settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
+            printSettingsService.initPrintSettingsFromPrefs(settings, true, Ci.nsIPrintSettings.kInitSaveAll);
             break;
         case 'pdf':
         case 'ps':
@@ -377,14 +371,14 @@ function delayedPrintPageLoadComplete() {
              */
             settings.printerName = printSettingsService.defaultPrinterName;
             /* We have no interest on those other than prefs. */
-            printSettingsService.initPrintSettingsFromPrefs(settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
+            printSettingsService.initPrintSettingsFromPrefs(settings, true, Ci.nsIPrintSettings.kInitSaveAll);
             settings.printerName = null;
             /* settings for PDF. */
             settings.printToFile = true;
             settings.toFileName = window.arguments[2];
             settings.outputFormat = (mode === 'pdf') ?
-                Components.interfaces.nsIPrintSettings.kOutputFormatPDF :
-                Components.interfaces.nsIPrintSettings.kOutputFormatPS;
+                Ci.nsIPrintSettings.kOutputFormatPDF :
+                Ci.nsIPrintSettings.kOutputFormatPS;
             break;
         default:
             /* Unkown mode. Can it go on? */
@@ -393,11 +387,11 @@ function delayedPrintPageLoadComplete() {
     /* setup other preferences */
     setupOtherPreferences(settings);
     settings.printSilent = true;
-    printInfo && console.log(settings);
+    if (printInfo) console.log(settings);
     try {
-        var webBrowserPrint =
-                content.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                .getInterface(Components.interfaces.nsIWebBrowserPrint);
+        var webBrowserPrint = content.
+            QueryInterface(Ci.nsIInterfaceRequestor).
+            getInterface(Ci.nsIWebBrowserPrint);
         webBrowserPrint.print(settings, gPrintProgressListener);
     } catch (ex) {
         console.log(ex);
@@ -409,7 +403,6 @@ function delayedShutdown() {
         window.close();
     }, 100);
 }
-
 
 function getBrowser() {
     return document.getElementById('content');
