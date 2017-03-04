@@ -10,7 +10,6 @@ function startup(data) {
 }
 
 function shutdown(data, reason) {
-  cmdlineprint = Cu.import("resource://cmdlnprint/components/cmdlnprint.jsm", {});
   cmdlineprint.shutdown();
 }
 
