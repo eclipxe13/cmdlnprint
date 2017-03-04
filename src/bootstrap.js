@@ -5,12 +5,12 @@ const Cu = Components.utils;
 let cmdlineprint;
 
 function startup(data) {
-  cmdlineprint = Cu.import("resource://cmdlnprint/components/cmdlnprint.jsm", {});
-  cmdlineprint.startup();
+    cmdlineprint = Cu.import("resource://cmdlnprint/components/cmdlnprint.jsm", {});
+    cmdlineprint.startup();
 }
 
 function shutdown(data, reason) {
-  cmdlineprint.shutdown();
+    cmdlineprint.shutdown();
 }
 
 function install() {
