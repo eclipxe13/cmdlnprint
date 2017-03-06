@@ -2,6 +2,8 @@ FROM ubuntu:latest
 #For Firefox Version 11 use precise (12.04)
 #Ubuntu Current Stable is 16.04 aka xenial aka latest
 
+#I use cd . as a NO OP, when I want to do something other than && \
+
 ENV DEBIAN_FRONTEND noninteractive
 ENV RUNUSER firefox
 
@@ -41,9 +43,16 @@ RUN \
   mkdir /tmp/cmdlnprint && \
   git clone -b ${GIT_BRANCH} ${GIT_REPO} /tmp/cmdlnprint && \
   cd /tmp/cmdlnprint/src && \
-  mkdir ../dist && \
-  make && \
-  cd ../dist && \
+  if [ -f Makefile ]; then \
+     make && \
+     cd ../dist && \
+     cd . ; \
+  else \
+     apt-get install -y --no-install-recommends nodejs nodejs-legacy npm && \
+     npm install jpm --global && \
+     jpm xpi . && \ 
+     cd . ; \
+  fi && \
   for xpi in $(ls *.xpi); do \
     echo "Installing ${xpi}..." && \
     xpi_uuid=$(unzip -qc ${xpi} install.rdf | xmlstarlet sel \
