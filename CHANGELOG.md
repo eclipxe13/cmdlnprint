@@ -1,3 +1,12 @@
+# version 1.1.1
+- From this version, the version will be:
+    Major: change in backward compatibility
+    Minor: change in plugin (require publish on Mozilla Addons)
+    Revision: change that don't require publish on Mozilla Addons but in github master branch
+- Introduced docker folder from @bdurrow (thanks!)
+- Change docker/Dockerfile to build using Makefile location and rules
+- Change javascript files for more readability
+
 # version 1.0.6
 - Fix units, margin and edges documentation
 - Remove const Components.classes and Components.interfaces due mozilla warnings
