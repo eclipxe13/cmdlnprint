@@ -18,7 +18,8 @@ var gPrintProgressListener = {
         // don't implement
     },
     /* nsISupports */
-    QueryInterface: function progress_qi(aIID) {
+    QueryInterface: function progress_qi(aIID)
+    {
         if (!aIID.equals(Components.interfaces.nsISupports) &&
             !aIID.equals(Components.interfaces.nsISupportsWeakReference) &&
             !aIID.equals(Components.interfaces.nsIWebProgressListener)) {
@@ -37,7 +38,8 @@ var gBrowserProgressListener = {
         }
     },
     /* nsISupports */
-    QueryInterface: function progress_qi(aIID) {
+    QueryInterface: function progress_qi(aIID)
+    {
         if (!aIID.equals(Components.interfaces.nsISupports) &&
             !aIID.equals(Components.interfaces.nsISupportsWeakReference) &&
             !aIID.equals(Components.interfaces.nsIWebProgressListener)) {
@@ -74,7 +76,8 @@ function saveDocumentAsHtml()
     );
 }
 
-function saveCanvas(canvas, path) {
+function saveCanvas(canvas, path)
+{
     // Convert the Canvas to a Binary Stream
     try {
         var io = Components.classes['@mozilla.org/network/io-service;1']
@@ -112,7 +115,8 @@ function saveCanvas(canvas, path) {
     }
 }
 
-function startup() {
+function startup()
+{
     sizeToContent();
     getBrowser().webProgress.addProgressListener(gBrowserProgressListener, Components.interfaces.nsIWebProgress .NOTIFY_LOCATION);
     getBrowser().addEventListener('pageshow', onPrintPageShow, false);
@@ -135,7 +139,8 @@ function startup() {
     }, timeout * 1000);
 }
 
-function printWithCanvas() {
+function printWithCanvas()
+{
     var canvas = document.createElementNS('http://www.w3.org/1999/xhtml', 'canvas');
     var canvasWidth = content.scrollMaxX + content.innerWidth;
     var canvasHeight = content.scrollMaxY + content.innerHeight;
@@ -165,7 +170,8 @@ function printWithCanvas() {
     saveCanvas(canvas, window.arguments[2]);
 }
 
-function onPrintPageShow(aEvent) {
+function onPrintPageShow(aEvent)
+{
     if (getBrowser().contentDocument.readyState === 'complete') {
         setTimeout(onPrintPageLoadComplete, 0);
     } else {
@@ -173,13 +179,15 @@ function onPrintPageShow(aEvent) {
     }
 }
 
-function onDocumentReadyStateChange(aEvent) {
+function onDocumentReadyStateChange(aEvent)
+{
     if (getBrowser().contentDocument.readyState === 'complete') {
         onPrintPageLoadComplete();
     }
 }
 
-function onPrintPageLoadComplete() {
+function onPrintPageLoadComplete()
+{
 
     if ('' === window.arguments[3] || '0' === window.arguments[3]) {
         delayedPrintPageLoadComplete();
@@ -202,7 +210,8 @@ function onPrintPageLoadComplete() {
  * https://dxr.mozilla.org/mozilla-beta/source/widget/nsIPrintSettings.idl
  * http://stage.oxymoronical.com/experiments/xpcomref/applications/Firefox/3.5/interfaces/nsIPrintSettings
  */
-function setupOtherPreferences(settings) {
+function setupOtherPreferences(settings)
+{
     // orientation
     var aOrientation = (window.arguments[5]) ? window.arguments[5] : 'default';
     settings.orientation =
@@ -313,7 +322,8 @@ function setupOtherPreferences(settings) {
     }
 }
 
-function delayedPrintPageLoadComplete() {
+function delayedPrintPageLoadComplete()
+{
     if (gLocked) {
         return;
     }
@@ -389,7 +399,9 @@ function delayedPrintPageLoadComplete() {
     /* setup other preferences */
     setupOtherPreferences(settings);
     settings.printSilent = true;
-    if (printInfo) console.log(settings);
+    if (printInfo) {
+        console.log(settings);
+    }
     try {
         var webBrowserPrint = content.
             QueryInterface(Components.interfaces.nsIInterfaceRequestor).
@@ -400,12 +412,14 @@ function delayedPrintPageLoadComplete() {
     }
 }
 
-function delayedShutdown() {
+function delayedShutdown()
+{
     window.setTimeout(function () {
         window.close();
     }, 100);
 }
 
-function getBrowser() {
+function getBrowser()
+{
     return document.getElementById('content');
 }
