@@ -53,8 +53,8 @@ RUN \
   git clone -b ${GIT_BRANCH} ${GIT_REPO} /tmp/cmdlnprint && \
   cd /tmp/cmdlnprint && \
   make build && \
-  xpi_file=dist/cmdlnprint_$(grep -oP '"version"\s*:\s*"\K[a-zA-Z0-9.]+' src/package.json).xpi && \
-  xpi_uuid=$(grep -oP '"id"\s*:\s*"\K[a-zA-Z0-9{}\\-]+' src/package.json) && \
+  xpi_file=$(make info | awk '{print $4}') && \
+  xpi_uuid=$(make info | awk '{print $3}') && \
   echo "  Installing ${xpi_file} -> ${FIREFOX_INSTALL_DIR}/extensions/${xpi_uuid}.xpi" && \
   mkdir -p ${FIREFOX_INSTALL_DIR}/extensions || true && \
   cp ${xpi_file} ${FIREFOX_INSTALL_DIR}/extensions/${xpi_uuid}.xpi && \
