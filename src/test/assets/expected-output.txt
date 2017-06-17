@@ -1,0 +1,112 @@
+build passing
+Firefox cmdlnprint extension
+Addon for Firefox to automate printing using command line (silent printing).
+You can print to a normal printer configured at your system or print as a file (pdf, ps or png).
+Get it from Mozilla Addons: https://addons.mozilla.org/en-US/firefox/addon/cmdlnprint/
+Why this plugin exists?
+Sometimes you need to automate the process of printing a webpage to a local
+printer or create a PDF from a web application that doesn’t create it by itself.
+This is when cmdlnprint extension comes to help.
+A good example is to create PDF files from a web application.
+Sometimes the application cannot create the PDF,
+sometimes you don’t have time to programming the report.
+I have seen other people explaining how they use this tool:
+http://cfsprinter.readthedocs.io/en/latest/browser.html
+http://forums.mozillazine.org/viewtopic.php?f=38&t=2729795
+https://eegg.wordpress.com/2010/01/17/html-to-pdf/
+It would be great for firefox to support command line printing or automation printing API.
+Usage
+firefox -print <URL>
+Options
+-print-mode [mode] : pdf|png|ps|postscript|html|htm|text|txt|<printer-name>, default printer
+-print-file filename : output file, use absolute paths
+-print-delay number : seconds to wait before printing, default 0
+-print-printer printer : if ‘’ (empty string) or ‘default’ then will lookup for your current
+default printer
+-print-orientation [yes/no/default] : portrait, landscape or default
+-print-bgcolors [yes/no/default] : yes, no or default
+-print-bgimages [yes/no/default] : yes, no or default
+-print-shrinktofit [yes/no/default] : yes, no or default
+-print-header [yes/no] : yes or no, default to “no”
+-print-header-left text : text to print of header left, default to ‘user_pref’
+-print-header-center text : text to print of header center, default to ‘user_pref’
+-print-header-right text : text to print of header right, default to ‘user_pref’
+-print-footer [yes/no] : yes or no, default to “no”
+-print-footer-left text : text to print of footer left, default to ‘user_pref’
+-print-footer-center text : text to print of footer center, default to ‘user_pref’
+-print-footer-right text : text to print of footer right, default to ‘user_pref’
+-print-range [yes/no] : define if the following parameters will be used
+-print-range-start number : page start
+-print-range-end number : page end
+-print-paper-custom [yes/no] : yes or no, default no
+-print-paper-units [mm/in] : mm for millimeters or in for inches, default in
+-print-paper-width number : default 8.5
+-print-paper-height number : default 11
+-print-margin-top number : default 0.4
+-print-margin-right number : default 0.4
+-print-margin-bottom number : default 0.4
+-print-margin-left number : default 0.4
+-print-edge-top number : default 0
+-print-edge-right number : default 0
+-print-edge-bottom number : default 0
+-print-edge-left number : default 0
+Options that uses yes/no values
+For no you can set: 0, off, n. For yes you can set 1, on, y.
+This are the same: -print-header yes , -print-header y , -print-header on or -print-
+header 1 .
+About header and footer
+The default value for -print-header and -print-footer is "no" .
+The only way to specify that you want a header or footer is to set the parameter
+to a possitive value ‘yes’, ‘y’, ‘1’, ‘on’
+The default value for -print-[header,footer]-[left,center,right] is "user_pref" .
+When one of this parameters is equal to "user_pref" the plugin will simply use the
+user defined value. Otherwise, it will print the string defined in the parameter.
+Remember that you can use some special keywords in header and footer sections:
+&U Page address (URL)
+&D Date and time
+&T Page title
+&P Page number
+&PT Page number with total (Example: “3 of 5”)
+&& A single ampersand (&)
+Examples of header and footer
+firefox -print http://example.org
+will not print any header or footer
+firefox -print http://example.org -print-header yes
+will take all the defaults for header but will not produce any footer
+firefox -print http://example.org -print-header yes -print-header-center
+'' -print-header-right '2017-03-01'
+will print header, header left will be the user preference,
+header center will be an empty string, header right will be the date 2017-03-01, will not print any
+footer.
+firefox -print http://example.org -print-header-center "my custom title"
+will not print any header or footer,
+even when -print-header-center was set because -print-header yes was not set.
+About paper size, edges and margins
+These are rules followed by the plugin that may help you when printing.
+The unwritable margins are always zero.
+The parameter print-paper-units defines the units of size, edges and margins
+The size of the paper is defined by print-paper-custom, print-paper-width and print-paper-height
+If no custom paper is defined then it uses the default
+The edges (top, right, bottom and left) define the position of the header and footer
+The margins (top, right, bottom and left) define the position of the content
+Disabling the hardware acceleration
+According to issue #7 [GFX1-]: D3D11 layers just crashed; D3D11 will be disabled.
+It may be helpful if you are experiencing problems to disable handware acceleration on firefox settings.
+Get information about the execution
+If the option -print-info yes is set then it will print the options readed and also the
+settings object in the console. Add also the parameter -jsconsole .
+Authors
+Current: Carlos C Soto https://github.com/eclipxe13
+Original: O. Atsushi https://github.com/Torisugari
+I’ve been use this extension from O. Atsushi from several years, he had never answer an email
+or take care of a pull request on github, this is why I’m taking the project and giving him the credit for
+the initial release. Thanks!
+Feel free to contibute to this project, we are on github!
+https://github.com/eclipxe13/cmdlnprint/
+Help wanted
+If you have experience creating and building firefox extensions,
+could you please consider mentor me or help me maintaining this extension?
+License
+MPL 1.1/GPL 2.0/LGPL 2.1 as shown in file
+src/chrome/license.txt
+

@@ -12,6 +12,7 @@ addons:
         packages:
             - ca-certificates
             - sharutils
+            - poppler-utils
 
 before_install:
     - sh -e /etc/init.d/xvfb start
@@ -24,5 +25,7 @@ before_script:
 
 script:
     - jpm xpi -v --addon-dir src/ --dest-dir . && unzip -l cmdlnprint.xpi
-    - jpm run -v --addon-dir src/ --binary "${FFBIN}" --binary-args '-print src/test/assets/sample.html -print-mode pdf -print-file /tmp/test.pdf'
-    - cat /tmp/test.pdf | uuencode test.pdf
+    - jpm run -v --addon-dir src/ --binary "${FFBIN}" --binary-args '-print src/test/assets/sample.html -print-mode pdf -print-file /tmp/output.pdf'
+    - pdftotext -raw /tmp/output.pdf /tmp/output.txt && diff -q src/test/assets/expected-output.txt /tmp/output.txt > /dev/null
+    - cat /tmp/output.txt
+    - cat /tmp/output.pdf | uuencode output.pdf

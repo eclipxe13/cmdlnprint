@@ -1,5 +1,12 @@
+# 1.1.2
+- Change to maximum version 55
+- Add .eslintrc.json and .eslintignore and fix code style using eslint
+- Remove error on mininav.js delayedShutdown
+- Change var declarations to let and const
+- Update travis to extract and compare to plain text
+
 # version 1.1.1
-- From this version, the version will be:
+- From now on, the version will be:
     Major: change in backward compatibility
     Minor: change in plugin (require publish on Mozilla Addons)
     Revision: change that don't require publish on Mozilla Addons but in github master branch
