@@ -1,4 +1,3 @@
-dist: trusty
 language: node_js
 node_js:
     - stable
@@ -9,6 +8,14 @@ env:
 
 matrix:
     include:
+        - env: FF_REQUIRED="38.0a1"
+          addons:
+              firefox: "38.0a1"
+              apt:
+                  packages:
+                      - ca-certificates
+                      - sharutils
+                      - poppler-utils
         - env: FF_REQUIRED="45.0"
           addons:
               firefox: "45.0"
