@@ -1,14 +1,16 @@
+dist: trusty
 language: node_js
 node_js:
     - stable
 
 env:
+    - FF_REQUIRED="45.0"
+    - FF_REQUIRED="52.0"
     global:
         - DISPLAY=:99.0
+
 addons:
-    firefox:
-        - "45.0"
-        - "52.0"
+    firefox: $FF_REQUIRED
     apt:
         packages:
             - ca-certificates
