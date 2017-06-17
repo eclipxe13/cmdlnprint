@@ -8,33 +8,33 @@ env:
 
 matrix:
     include:
-        - env: FF_REQUIRED="38.0a1"
+        - env: FF_REQUIRED=38.0a1
           addons:
-              firefox: "38.0a1"
+              firefox: 38.0a1
               apt:
                   packages:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-        - env: FF_REQUIRED="45.0"
+        - env: FF_REQUIRED=45.0
           addons:
-              firefox: "45.0"
+              firefox: 45
               apt:
                   packages:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-        - env: FF_REQUIRED="52.0"
+        - env: FF_REQUIRED=52.0
           addons:
-              firefox: "52.0"
+              firefox: 52
               apt:
                   packages:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-        - env: FF_REQUIRED="latest"
+        - env: FF_REQUIRED=latest
           addons:
-              firefox: "latest"
+              firefox: latest
               apt:
                   packages:
                       - ca-certificates
@@ -53,6 +53,6 @@ before_script:
 script:
     - jpm xpi -v --addon-dir src/ --dest-dir . && unzip -l cmdlnprint.xpi
     - jpm run -v --addon-dir src/ --binary "${FFBIN}" --binary-args '-print src/test/assets/sample.html -print-mode pdf -print-file /tmp/output.pdf'
-    - pdftotext -raw /tmp/output.pdf /tmp/output.txt && diff -q src/test/assets/expected-output.txt /tmp/output.txt
-    - cat /tmp/output.txt
+    - pdftotext -q -raw /tmp/output.pdf | tee /tmp/output.txt
+    - diff -q src/test/assets/expected-output.txt /tmp/output.txt
     - cat /tmp/output.pdf | uuencode output.pdf
