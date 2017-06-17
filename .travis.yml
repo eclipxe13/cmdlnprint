@@ -7,23 +7,32 @@ env:
     global:
         - DISPLAY=":99.0"
 
-addons:
-    apt:
-        packages:
-            - ca-certificates
-            - sharutils
-            - poppler-utils
 matrix:
     include:
         - env: FF_REQUIRED="45.0"
           addons:
-            firefox: "45.0"
+              firefox: "45.0"
+              apt:
+                  packages:
+                      - ca-certificates
+                      - sharutils
+                      - poppler-utils
         - env: FF_REQUIRED="52.0"
           addons:
-            firefox: "52.0"
+              firefox: "52.0"
+              apt:
+                  packages:
+                      - ca-certificates
+                      - sharutils
+                      - poppler-utils
         - env: FF_REQUIRED="latest"
           addons:
-            firefox: "latest"
+              firefox: "latest"
+              apt:
+                  packages:
+                      - ca-certificates
+                      - sharutils
+                      - poppler-utils
 
 before_install:
     - sh -e /etc/init.d/xvfb start
