@@ -4,39 +4,28 @@ node_js:
     - stable
 
 env:
-    - FF_REQUIRED="45.0"
-    - FF_REQUIRED="52.0"
-    - FF_REQUIRED="latest"
+    global:
+        - DISPLAY=":99.0"
 
+addons:
+    apt:
+        packages:
+            - ca-certificates
+            - sharutils
+            - poppler-utils
 matrix:
     include:
         - env: FF_REQUIRED="45.0"
           addons:
             firefox: "45.0"
-            apt:
-                packages:
-                    - ca-certificates
-                    - sharutils
-                    - poppler-utils
         - env: FF_REQUIRED="52.0"
           addons:
             firefox: "52.0"
-            apt:
-                packages:
-                    - ca-certificates
-                    - sharutils
-                    - poppler-utils
         - env: FF_REQUIRED="latest"
           addons:
             firefox: "latest"
-            apt:
-                packages:
-                    - ca-certificates
-                    - sharutils
-                    - poppler-utils
 
 before_install:
-    - export DISPLAY=":99.0"
     - sh -e /etc/init.d/xvfb start
     - npm install -g jpm
 
