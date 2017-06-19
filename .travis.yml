@@ -35,15 +35,6 @@ matrix:
                       - sharutils
                       - poppler-utils
                       - x11-utils
-        - env: FF_REQUIRED=latest
-          addons:
-              firefox: latest
-              apt:
-                  packages:
-                      - ca-certificates
-                      - sharutils
-                      - poppler-utils
-                      - x11-utils
 
 before_install:
     - sh -e /etc/init.d/xvfb start
