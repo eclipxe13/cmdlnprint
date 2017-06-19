@@ -1,14 +1,14 @@
-FROM ubuntu:latest
+FROM ubuntu:xenial
 # For Firefox Version 11 use precise (12.04)
 # Ubuntu Current Stable is 16.04 aka xenial aka latest
-# As of 2017-04-05 Xenial contains version 52
+# As of 2017-06-18 Xenial contains versions 54 and 45
 
 #I use cd . as a NO OP, when I want to do something other than && \
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV RUNUSER firefox
 
-ARG FIREFOX_VERSION=52
+ARG FIREFOX_VERSION=54
 
 ARG FIREFOX_INSTALL_DIR=/usr/lib/firefox-addons/
 ARG GIT_REPO=https://github.com/eclipxe13/cmdlnprint.git
@@ -44,6 +44,7 @@ ADD root /
 RUN \
   useradd -m $RUNUSER && \
   apt-get update && \
+  apt-cache policy firefox && \
   apt-get install -y --no-install-recommends ${APT_PACKAGES_RUN} ${APT_PACKAGES_BUILD} && \
   npm install jpm --global
 

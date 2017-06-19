@@ -23,7 +23,7 @@ There are several defaults that are reasonable choices that can be overridden
 The following can be overridden at docker build time with the `--build-arg ARG=value.  So if you wanted to build firefox version 45 (this combiniation does not currently work but perhaps you want to see that) you could build with `docker build --build-arg FIREFOX_VERSION=45 -t cmdlnprint:104_45 ./`
 
 ```
-FIREFOX_VERSION=51
+FIREFOX_VERSION=54
 GIT_REPO=https://github.com/eclipxe13/cmdlnprint.git
 GIT_BRANCH=master
 ```
@@ -59,7 +59,7 @@ TODO:
 - [ ] Setup remote debugging to work out of the box by doing the configuration work and exposing port 6000
 - [ ] Allow build arguments to override the apt-get installed firefox with one installed from a url
 - [ ] Provide helpful output from entrypoint.sh if called without any arguments
-- [ ] Fix FF 45 and 52.
+- [ ] Fix FF 45 and 54.
 - [ ] Make configurable environment variable that will inject configuration options that make firefox more verbose
 - [ ] Devise a method to expose cmdlnprint as a web service
 - [ ] Devise a method to process jobs from a queue of some sort
