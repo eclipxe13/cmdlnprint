@@ -26,6 +26,60 @@ matrix:
                       - sharutils
                       - poppler-utils
                       - x11-utils
+        - env: FF_REQUIRED=52.0esr
+          addons:
+              firefox: 52.0esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - sharutils
+                      - poppler-utils
+                      - x11-utils
+        - env: FF_REQUIRED=52.0.1esr
+          addons:
+              firefox: 52.0.1esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - sharutils
+                      - poppler-utils
+                      - x11-utils
+        - env: FF_REQUIRED=52.0.2esr
+          addons:
+              firefox: 52.0.2esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - sharutils
+                      - poppler-utils
+                      - x11-utils
+        - env: FF_REQUIRED=52.1.0esr
+          addons:
+              firefox: 52.1.0esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - sharutils
+                      - poppler-utils
+                      - x11-utils
+        - env: FF_REQUIRED=52.1.1esr
+          addons:
+              firefox: 52.1.1esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - sharutils
+                      - poppler-utils
+                      - x11-utils
+        - env: FF_REQUIRED=52.1.2esr
+          addons:
+              firefox: 52.1.2esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - sharutils
+                      - poppler-utils
+                      - x11-utils
         - env: FF_REQUIRED=52.2.0esr
           addons:
               firefox: 52.2.0esr
