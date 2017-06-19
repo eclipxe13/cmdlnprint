@@ -8,25 +8,25 @@ env:
 
 matrix:
     include:
-        - env: FF_REQUIRED=38.0a1
+        - env: FF_REQUIRED=38.0.1esr
           addons:
-              firefox: 38.0a1
+              firefox: 38.0.1esr
               apt:
                   packages:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-        - env: FF_REQUIRED=45.0
+        - env: FF_REQUIRED=45.9.0esr
           addons:
-              firefox: 45
+              firefox: 45.9.0esr
               apt:
                   packages:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-        - env: FF_REQUIRED=52.0
+        - env: FF_REQUIRED=52.2.0esr
           addons:
-              firefox: 52
+              firefox: 52.2.0esr
               apt:
                   packages:
                       - ca-certificates
@@ -44,15 +44,17 @@ matrix:
 before_install:
     - sh -e /etc/init.d/xvfb start
     - npm install -g jpm
+    - sleep 5 && xdpyinfo -display :0 >/dev/null 2>&1
 
 before_script:
     - export FFBIN="$(which firefox)"
     - jpm --version
-    - which pdftotext && which firefox && firefox -version && which firefox-bin && firefox-bin -version
+    - which pdftotext && which firefox && firefox -version
 
 script:
     - jpm xpi -v --addon-dir src/ --dest-dir . && unzip -l cmdlnprint.xpi
     - jpm run -v --addon-dir src/ --binary "${FFBIN}" --binary-args '-print src/test/assets/sample.html -print-mode pdf -print-file /tmp/output.pdf'
+    - ls -alh /tmp/output.pdf
     - pdftotext -q -raw /tmp/output.pdf | tee /tmp/output.txt
     - diff -q src/test/assets/expected-output.txt /tmp/output.txt
     - cat /tmp/output.pdf | uuencode output.pdf
