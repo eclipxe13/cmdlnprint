@@ -43,7 +43,7 @@ before_install:
 
 before_script:
     - export FFBIN="$(which firefox)"
-    - cp travis/cmdlnprint-prefs.js $(dirname ${FFBIN})/defaults/pref/cmdlnprint-prefs.js
+    - cp docker/root/etc/firefox-esr/cmdlnprint.js $(dirname ${FFBIN})/defaults/pref/cmdlnprint.js
     - jpm --version
     - which pdftotext && which firefox && firefox -version
 
