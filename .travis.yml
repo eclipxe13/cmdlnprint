@@ -16,7 +16,6 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-                      - x11-utils
         - env: FF_REQUIRED=45.9.0esr
           addons:
               firefox: 45.9.0esr
@@ -25,7 +24,6 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-                      - x11-utils
         - env: FF_REQUIRED=52.0esr
           addons:
               firefox: 52.0esr
@@ -34,7 +32,6 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-                      - x11-utils
         - env: FF_REQUIRED=52.0.1esr
           addons:
               firefox: 52.0.1esr
@@ -43,7 +40,6 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-                      - x11-utils
         - env: FF_REQUIRED=52.0.2esr
           addons:
               firefox: 52.0.2esr
@@ -52,7 +48,6 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-                      - x11-utils
         - env: FF_REQUIRED=52.1.0esr
           addons:
               firefox: 52.1.0esr
@@ -61,7 +56,6 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-                      - x11-utils
         - env: FF_REQUIRED=52.1.1esr
           addons:
               firefox: 52.1.1esr
@@ -70,7 +64,6 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-                      - x11-utils
         - env: FF_REQUIRED=52.1.2esr
           addons:
               firefox: 52.1.2esr
@@ -79,7 +72,6 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-                      - x11-utils
         - env: FF_REQUIRED=52.2.0esr
           addons:
               firefox: 52.2.0esr
@@ -88,12 +80,10 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
-                      - x11-utils
 
 before_install:
     - sh -e /etc/init.d/xvfb start
     - npm install -g jpm
-    - sleep 5 && xdpyinfo -display $DISPLAY
 
 before_script:
     - export FFBIN="$(which firefox)"
