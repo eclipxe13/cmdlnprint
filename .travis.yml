@@ -39,7 +39,7 @@ matrix:
 before_install:
     - sh -e /etc/init.d/xvfb start
     - npm install -g jpm
-    - sleep 5 && xdpyinfo -display $DISPLAY >/dev/null 2>&1
+    - sleep 5 && xdpyinfo -display $DISPLAY
 
 before_script:
     - export FFBIN="$(which firefox)"
