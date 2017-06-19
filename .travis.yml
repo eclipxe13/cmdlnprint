@@ -55,6 +55,6 @@ script:
     - jpm xpi -v --addon-dir src/ --dest-dir . && unzip -l cmdlnprint.xpi
     - jpm run -v --addon-dir src/ --binary "${FFBIN}" --binary-args '-print src/test/assets/sample.html -print-mode pdf -print-file /tmp/output.pdf'
     - ls -alh /tmp/output.pdf
-    - diff -q src/test/assets/expected-output.txt /tmp/output.txt
     - pdftotext -q -raw /tmp/output.pdf - | tee /tmp/output.txt
+    - diff -b -B src/test/assets/expected-output.txt /tmp/output.txt
     - cat /tmp/output.pdf | uuencode output.pdf
