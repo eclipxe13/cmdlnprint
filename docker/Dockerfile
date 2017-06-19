@@ -1,71 +1,24 @@
-FROM ubuntu:xenial
-# For Firefox Version 11 use precise (12.04)
-# Ubuntu Current Stable is 16.04 aka xenial aka latest
-# As of 2017-06-18 Xenial contains versions 54 and 45
+FROM cmdlnprint-base
 
-#I use cd . as a NO OP, when I want to do something other than && \
-
-ENV DEBIAN_FRONTEND noninteractive
-ENV RUNUSER firefox
-
-ARG FIREFOX_VERSION=54
-
-ARG FIREFOX_INSTALL_DIR=/usr/lib/firefox-addons/
 ARG GIT_REPO=https://github.com/eclipxe13/cmdlnprint.git
 ARG GIT_BRANCH=master
 
-ARG APT_PACKAGES_RUN="\
-    ca-certificates \
-    dbus-x11 \
-    firefox=${FIREFOX_VERSION}* \
-    fonts-liberation \
-    fonts-lmodern \
-    libdbus-glib-1-2 \
-    libgtk-3-0 \
-    ttf-dejavu-core \
-    ttf-dejavu-extra \
-    ttf-liberation \
-    xvfb"
+RUN set -e && \
+    if [ -e /tmp/cmdlnprint ]; then rm -rf /tmp/cmdlnprint; fi && \
+    mkdir -p /tmp/cmdlnprint && \
+    git clone -b ${GIT_BRANCH} ${GIT_REPO} /tmp/cmdlnprint && \
+    cd /tmp/cmdlnprint && \
+    make build && \
+    cd /tmp/cmdlnprint && \
+    xpi_file=$(make info | awk '{print $4}') && \
+    xpi_uuid=$(make info | awk '{print $3}') && \
+    echo "  Installing ${xpi_file} -> ${FIREFOX_INSTALL_DIR}/extensions/${xpi_uuid}.xpi" && \
+    export FIREFOX_INSTALL_DIR=/usr/lib/firefox-esr/browser/ && \
+    if [ ! -e ${FIREFOX_INSTALL_DIR}/extensions ]; then mkdir -p ${FIREFOX_INSTALL_DIR}/extensions; fi && \
+    cp ${xpi_file} ${FIREFOX_INSTALL_DIR}/extensions/${xpi_uuid}.xpi
 
-ARG APT_PACKAGES_BUILD="\
-    bzip2 \
-    curl \
-    git \
-    make \
-    unzip \
-    xmlstarlet \
-    zip \
-    nodejs \
-    nodejs-legacy \
-    npm"
+EXPOSE 5900
 
 ADD root /
 
-RUN \
-  useradd -m $RUNUSER && \
-  apt-get update && \
-  apt-cache policy firefox && \
-  apt-get install -y --no-install-recommends ${APT_PACKAGES_RUN} ${APT_PACKAGES_BUILD} && \
-  npm install jpm --global
-
-RUN \
-  rm -rf /tmp/cmdlnprint || true && \
-  mkdir -p /tmp/cmdlnprint || true && \
-  git clone -b ${GIT_BRANCH} ${GIT_REPO} /tmp/cmdlnprint && \
-  cd /tmp/cmdlnprint && \
-  make build && \
-  xpi_file=$(make info | awk '{print $4}') && \
-  xpi_uuid=$(make info | awk '{print $3}') && \
-  echo "  Installing ${xpi_file} -> ${FIREFOX_INSTALL_DIR}/extensions/${xpi_uuid}.xpi" && \
-  mkdir -p ${FIREFOX_INSTALL_DIR}/extensions || true && \
-  cp ${xpi_file} ${FIREFOX_INSTALL_DIR}/extensions/${xpi_uuid}.xpi && \
-  cd / && \
-  rm -rf /tmp/cmdlnprint && \
-  apt-get purge -y ${APT_PACKAGES_BUILD} && \
-  apt-get autoremove -y --purge && \
-  rm -rf /var/lib/apt/lists/* && \
-  chmod 755 /usr/local/bin/entrypoint.sh
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-USER ${RUNUSER}
+ENTRYPOINT ["/usr/bin/bash", "/usr/local/bin/entrypoint"]
