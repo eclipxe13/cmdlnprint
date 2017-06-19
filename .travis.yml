@@ -43,7 +43,7 @@ before_install:
 
 before_script:
     - export FFBIN="$(which firefox)"
-    - echo -e '//cmdlnprint-prefs.js\nlockPref("xpinstall.signatures.required", false);\nlockPref("xpinstall.whitelist.required", false);\n' >> $(basename FFBIN)/defaults/pref/cmdlnprint-prefs.js
+    - cp travis/cmdlnprint-prefs.js $(dirname ${FFBIN})/defaults/pref/cmdlnprint-prefs.js
     - jpm --version
     - which pdftotext && which firefox && firefox -version
 
