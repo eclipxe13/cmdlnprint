@@ -16,6 +16,7 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
+                      - x11-utils
         - env: FF_REQUIRED=45.9.0esr
           addons:
               firefox: 45.9.0esr
@@ -24,6 +25,7 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
+                      - x11-utils
         - env: FF_REQUIRED=52.2.0esr
           addons:
               firefox: 52.2.0esr
@@ -32,6 +34,7 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
+                      - x11-utils
         - env: FF_REQUIRED=latest
           addons:
               firefox: latest
@@ -40,6 +43,7 @@ matrix:
                       - ca-certificates
                       - sharutils
                       - poppler-utils
+                      - x11-utils
 
 before_install:
     - sh -e /etc/init.d/xvfb start
