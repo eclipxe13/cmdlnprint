@@ -32,6 +32,9 @@ The electron-printer solution is based of electron (aka chromium for desktop),
 it does not make the same results as firefox + cmdlnprint and it has a lower set
 of parameters. But is a reasonable headless option with good results.
 
+Based on electron-printer is [Athena](http://www.athenapdf.com/)
+Drop-in replacement for wkhtmltopdf using Docker, Electron and Go.
+
 ## Why this plugin exists?
 
 Sometimes you need to automate the process of printing a webpage to a local
