@@ -2,7 +2,7 @@
 
 let gLocked = false;
 
-const STATE_START = Components.interfaces.nsIWebProgressListener.STATE_START;
+const STATE_STOP = Components.interfaces.nsIWebProgressListener.STATE_STOP;
 const LOCATION_CHANGE_ERROR_PAGE = Components.interfaces.nsIWebProgressListener.LOCATION_CHANGE_ERROR_PAGE;
 
 const gPrintProgressListener = {
@@ -13,7 +13,7 @@ const gPrintProgressListener = {
      * @var nsresult aStatus
      */
     onStateChange: function (aWebProgress, aRequest, aStateFlags, aStatus) {
-        if (aStateFlags & STATE_START) {
+        if (aStateFlags & STATE_STOP) {
             delayedShutdown();
         }
     },
