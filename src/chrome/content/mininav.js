@@ -378,7 +378,6 @@ function delayedPrintPageLoadComplete() {
         /* continue with setup */
         printSettingsService.initPrintSettingsFromPrinter(printerName, settings);
         printSettingsService.initPrintSettingsFromPrefs(settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
-        break;
     } else if ('pdf' === mode || 'ps' === mode) {
         /*
          There's no way to set *global* settings in Firefox 3.0.
@@ -396,7 +395,6 @@ function delayedPrintPageLoadComplete() {
         settings.outputFormat = ('pdf' === mode) ?
             Components.interfaces.nsIPrintSettings.kOutputFormatPDF :
             Components.interfaces.nsIPrintSettings.kOutputFormatPS;
-        break;
     } else {
         /* Unkown mode. Can it go on? */
         return;
