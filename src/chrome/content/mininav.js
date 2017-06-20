@@ -128,7 +128,7 @@ function saveCanvas(canvas, path) {
 function startup() {
     window.sizeToContent();
     const browser = window.getBrowser();
-    browser.webProgress.addProgressListener(gBrowserProgressListener, Components.interfaces.nsIWebProgress .NOTIFY_LOCATION);
+    browser.webProgress.addProgressListener(gBrowserProgressListener, Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
     browser.addEventListener('pageshow', onPrintPageShow, false);
     const uri = window.arguments[0];
     if (uri) {
