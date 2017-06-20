@@ -1,6 +1,6 @@
 # cmdlnprint docker image
 
-This image is based on debian stretch that ships with firefox 52 (as of 2017-06-18)
+This image is based on Debian Stretch that ships with firefox 52 (as of 2017-06-18)
 
 
 ```
@@ -71,5 +71,5 @@ See also: http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
 
 # TODO:
 
-- [ ] Remove manual installation of npm when debian stretch includes it.
+- [ ] Remove manual installation of npm when Debian Stretch includes it.
 - [ ] Allow other versions of firefox using the public mozilla repository.
