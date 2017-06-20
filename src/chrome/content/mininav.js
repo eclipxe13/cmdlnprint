@@ -1,6 +1,7 @@
 /* eslint-env mozilla/browser-window */
 
 let gLocked = false;
+
 const gPrintProgressListener = {
     onStateChange: function (aWebProgress, aRequest, aStateFlags, aStatus) {
         delayedShutdown();
@@ -33,7 +34,7 @@ const gBrowserProgressListener = {
         if (Components.interfaces.nsIWebProgressListener.LOCATION_CHANGE_ERROR_PAGE & aFlags) {
             // At this point, LOAD_BACKGROUND is set, so from now on, no event will
             // be fired.
-            setTimeout(onPrintPageLoadComplete, 100);
+            window.setTimeout(onPrintPageLoadComplete, 100);
         }
     },
     /* nsISupports */
@@ -175,7 +176,7 @@ function printWithCanvas() {
 
 function onPrintPageShow(aEvent) {
     if ('complete' === getBrowser().contentDocument.readyState) {
-        setTimeout(onPrintPageLoadComplete, 0);
+        window.setTimeout(onPrintPageLoadComplete, 100);
     } else {
         content.document.addEventListener('readystatechange', onDocumentReadyStateChange, false);
     }
@@ -188,7 +189,6 @@ function onDocumentReadyStateChange(aEvent) {
 }
 
 function onPrintPageLoadComplete() {
-
     if ('' === window.arguments[3] || '0' === window.arguments[3]) {
         delayedPrintPageLoadComplete();
     } else {
@@ -199,9 +199,7 @@ function onPrintPageLoadComplete() {
         if (delay > 120) {
             delay = 120;
         }
-        setTimeout(function () {
-            delayedPrintPageLoadComplete();
-        }, delay * 1000);
+        window.setTimeout(delayedPrintPageLoadComplete, delay * 1000);
     }
 }
 
@@ -350,8 +348,7 @@ function delayedPrintPageLoadComplete() {
 
     // http://stage.oxymoronical.com/experiments/xpcomref/applications/Firefox/3.5/interfaces/nsIPrintSettings
     const settings = printSettingsService.newPrintSettings;
-    switch (mode) {
-    case 'printer': {
+    if ('printer' === mode) {
         let printerName = ('default' === window.arguments[4]) ? printSettingsService.defaultPrinterName : '';
         /* Check whether the printer name specified by an argument is valid. */
         const list = Components.classes['@mozilla.org/gfx/printerenumerator;1']
@@ -372,15 +369,13 @@ function delayedPrintPageLoadComplete() {
         printSettingsService.initPrintSettingsFromPrinter(printerName, settings);
         printSettingsService.initPrintSettingsFromPrefs(settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
         break;
-    }
-    case 'pdf':
-    case 'ps': {
+    } else if ('pdf' === mode || 'ps' === mode) {
         /*
-                 There's no way to set *global* settings in Firefox 3.0.
-                 I'm not too sure why, but UI is gone. This is not rendering bug,
-                 but browser (or toolkit) bug.
-                 So copy from default printer settings.
-                 */
+         There's no way to set *global* settings in Firefox 3.0.
+         I'm not too sure why, but UI is gone. This is not rendering bug,
+         but browser (or toolkit) bug.
+         So copy from default printer settings.
+         */
         settings.printerName = printSettingsService.defaultPrinterName;
         /* We have no interest on those other than prefs. */
         printSettingsService.initPrintSettingsFromPrefs(settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
@@ -392,11 +387,9 @@ function delayedPrintPageLoadComplete() {
             Components.interfaces.nsIPrintSettings.kOutputFormatPDF :
             Components.interfaces.nsIPrintSettings.kOutputFormatPS;
         break;
-    }
-    default: {
-                /* Unkown mode. Can it go on? */
+    } else {
+        /* Unkown mode. Can it go on? */
         return;
-    }
     }
     /* setup other preferences */
     setupOtherPreferences(settings);
