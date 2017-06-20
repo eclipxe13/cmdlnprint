@@ -1,9 +1,21 @@
 /* eslint-env mozilla/browser-window */
 
 let gLocked = false;
+
+const STATE_STOP = Components.interfaces.nsIWebProgressListener.STATE_STOP;
+const LOCATION_CHANGE_ERROR_PAGE = Components.interfaces.nsIWebProgressListener.LOCATION_CHANGE_ERROR_PAGE;
+
 const gPrintProgressListener = {
+    /**
+     * @var nsIWebProgress aWebProgress
+     * @var nsIRequest aRequest
+     * @var unsigned long aStateFlags
+     * @var nsresult aStatus
+     */
     onStateChange: function (aWebProgress, aRequest, aStateFlags, aStatus) {
-        delayedShutdown();
+        if (aStateFlags & STATE_STOP) {
+            delayedShutdown();
+        }
     },
     onProgressChange: function (aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
         // don't implement
@@ -30,10 +42,10 @@ const gPrintProgressListener = {
 
 const gBrowserProgressListener = {
     onLocationChange: function (aWebProgress, aRequest, aLocation, aFlags) {
-        if (Components.interfaces.nsIWebProgressListener.LOCATION_CHANGE_ERROR_PAGE & aFlags) {
+        if (aFlags & LOCATION_CHANGE_ERROR_PAGE) {
             // At this point, LOAD_BACKGROUND is set, so from now on, no event will
             // be fired.
-            setTimeout(onPrintPageLoadComplete, 100);
+            window.setTimeout(onPrintPageLoadComplete, 100);
         }
     },
     /* nsISupports */
@@ -110,14 +122,27 @@ function saveCanvas(canvas, path) {
     }
 }
 
+/**
+ * This method is call at window.onload event
+ */
 function startup() {
-    sizeToContent();
-    getBrowser().webProgress.addProgressListener(gBrowserProgressListener, Components.interfaces.nsIWebProgress .NOTIFY_LOCATION);
-    getBrowser().addEventListener('pageshow', onPrintPageShow, false);
+    window.sizeToContent();
+    const browser = window.getBrowser();
+    browser.webProgress.addProgressListener(gBrowserProgressListener, Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
+    browser.addEventListener('pageshow', onPrintPageShow, false);
     const uri = window.arguments[0];
     if (uri) {
         try {
-            getBrowser().loadURI(uri);
+            browser.loadURI(uri);
+            // shortcut is documented in the following url since browser.type = "content-primary" but it seems to fail on firefox 54
+            // https://developer.mozilla.org/en-US/docs/Working_with_windows_in_chrome_code#Accessing_content_documents
+            // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/browser#a-browser.type
+            // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/browser#p-contentWindow
+            // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/Property/contentWindow
+            if (null === window.content) {
+                // do not use contentWindow.wrappedJSObject, it makes unable to use QueryInterface
+                window.content = browser.contentWindow;
+            }
         } catch (ex) {
             /* print error page, if possible */
             window.setTimeout(onPrintPageLoadComplete, 100);
@@ -165,7 +190,7 @@ function printWithCanvas() {
 
 function onPrintPageShow(aEvent) {
     if ('complete' === getBrowser().contentDocument.readyState) {
-        setTimeout(onPrintPageLoadComplete, 0);
+        window.setTimeout(onPrintPageLoadComplete, 100);
     } else {
         content.document.addEventListener('readystatechange', onDocumentReadyStateChange, false);
     }
@@ -178,21 +203,17 @@ function onDocumentReadyStateChange(aEvent) {
 }
 
 function onPrintPageLoadComplete() {
-
-    if ('' === window.arguments[3] || '0' === window.arguments[3]) {
-        delayedPrintPageLoadComplete();
-    } else {
-        let delay = parseInt(window.arguments[3]);
+    let delay = 0;
+    if ('' !== window.arguments[3]) {
+        delay = parseInt(window.arguments[3]);
         if (delay < 0) {
             delay = 0;
         }
         if (delay > 120) {
             delay = 120;
         }
-        setTimeout(function () {
-            delayedPrintPageLoadComplete();
-        }, delay * 1000);
     }
+    window.setTimeout(delayedPrintPageLoadComplete, delay * 1000);
 }
 
 /**
@@ -340,8 +361,7 @@ function delayedPrintPageLoadComplete() {
 
     // http://stage.oxymoronical.com/experiments/xpcomref/applications/Firefox/3.5/interfaces/nsIPrintSettings
     const settings = printSettingsService.newPrintSettings;
-    switch (mode) {
-    case 'printer':
+    if ('printer' === mode) {
         let printerName = ('default' === window.arguments[4]) ? printSettingsService.defaultPrinterName : '';
         /* Check whether the printer name specified by an argument is valid. */
         const list = Components.classes['@mozilla.org/gfx/printerenumerator;1']
@@ -361,15 +381,13 @@ function delayedPrintPageLoadComplete() {
         /* continue with setup */
         printSettingsService.initPrintSettingsFromPrinter(printerName, settings);
         printSettingsService.initPrintSettingsFromPrefs(settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
-        break;
-    case 'pdf':
-    case 'ps':
+    } else if ('pdf' === mode || 'ps' === mode) {
         /*
-             There's no way to set *global* settings in Firefox 3.0.
-             I'm not too sure why, but UI is gone. This is not rendering bug,
-             but browser (or toolkit) bug.
-             So copy from default printer settings.
-             */
+         There's no way to set *global* settings in Firefox 3.0.
+         I'm not too sure why, but UI is gone. This is not rendering bug,
+         but browser (or toolkit) bug.
+         So copy from default printer settings.
+         */
         settings.printerName = printSettingsService.defaultPrinterName;
         /* We have no interest on those other than prefs. */
         printSettingsService.initPrintSettingsFromPrefs(settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
@@ -380,9 +398,8 @@ function delayedPrintPageLoadComplete() {
         settings.outputFormat = ('pdf' === mode) ?
             Components.interfaces.nsIPrintSettings.kOutputFormatPDF :
             Components.interfaces.nsIPrintSettings.kOutputFormatPS;
-        break;
-    default:
-            /* Unkown mode. Can it go on? */
+    } else {
+        /* Unkown mode. Can it go on? */
         return;
     }
     /* setup other preferences */
