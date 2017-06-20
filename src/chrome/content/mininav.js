@@ -197,18 +197,17 @@ function onDocumentReadyStateChange(aEvent) {
 }
 
 function onPrintPageLoadComplete() {
-    if ('' === window.arguments[3] || '0' === window.arguments[3]) {
-        delayedPrintPageLoadComplete();
-    } else {
-        let delay = parseInt(window.arguments[3]);
+    let delay = 0;
+    if ('' !== window.arguments[3]) {
+        delay = parseInt(window.arguments[3]);
         if (delay < 0) {
             delay = 0;
         }
         if (delay > 120) {
             delay = 120;
         }
-        window.setTimeout(delayedPrintPageLoadComplete, delay * 1000);
     }
+    window.setTimeout(delayedPrintPageLoadComplete, delay * 1000);
 }
 
 /**
