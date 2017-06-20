@@ -345,7 +345,7 @@ function delayedPrintPageLoadComplete() {
     // http://stage.oxymoronical.com/experiments/xpcomref/applications/Firefox/3.5/interfaces/nsIPrintSettings
     const settings = printSettingsService.newPrintSettings;
     switch (mode) {
-    case 'printer':
+    case 'printer': {
         let printerName = ('default' === window.arguments[4]) ? printSettingsService.defaultPrinterName : '';
         /* Check whether the printer name specified by an argument is valid. */
         const list = Components.classes['@mozilla.org/gfx/printerenumerator;1']
@@ -366,14 +366,15 @@ function delayedPrintPageLoadComplete() {
         printSettingsService.initPrintSettingsFromPrinter(printerName, settings);
         printSettingsService.initPrintSettingsFromPrefs(settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
         break;
+    }
     case 'pdf':
-    case 'ps':
+    case 'ps': {
         /*
-             There's no way to set *global* settings in Firefox 3.0.
-             I'm not too sure why, but UI is gone. This is not rendering bug,
-             but browser (or toolkit) bug.
-             So copy from default printer settings.
-             */
+                 There's no way to set *global* settings in Firefox 3.0.
+                 I'm not too sure why, but UI is gone. This is not rendering bug,
+                 but browser (or toolkit) bug.
+                 So copy from default printer settings.
+                 */
         settings.printerName = printSettingsService.defaultPrinterName;
         /* We have no interest on those other than prefs. */
         printSettingsService.initPrintSettingsFromPrefs(settings, true, Components.interfaces.nsIPrintSettings.kInitSaveAll);
@@ -385,9 +386,11 @@ function delayedPrintPageLoadComplete() {
             Components.interfaces.nsIPrintSettings.kOutputFormatPDF :
             Components.interfaces.nsIPrintSettings.kOutputFormatPS;
         break;
-    default:
-            /* Unkown mode. Can it go on? */
+    }
+    default: {
+                /* Unkown mode. Can it go on? */
         return;
+    }
     }
     /* setup other preferences */
     setupOtherPreferences(settings);
