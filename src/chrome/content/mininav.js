@@ -3,8 +3,16 @@
 let gLocked = false;
 
 const gPrintProgressListener = {
+    /**
+     * @var nsIWebProgress aWebProgress
+     * @var nsIRequest aRequest
+     * @var unsigned long aStateFlags
+     * @var nsresult aStatus
+     */
     onStateChange: function (aWebProgress, aRequest, aStateFlags, aStatus) {
-        delayedShutdown();
+        if (aStateFlags & STATE_STOP) {
+            delayedShutdown();
+        }
     },
     onProgressChange: function (aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
         // don't implement
