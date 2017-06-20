@@ -21,4 +21,4 @@ EXPOSE 5900
 
 ADD root /
 
-ENTRYPOINT ["/usr/bin/bash", "/usr/local/bin/entrypoint"]
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint"]
