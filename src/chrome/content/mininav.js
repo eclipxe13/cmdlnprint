@@ -119,8 +119,14 @@ function startup() {
     if (uri) {
         try {
             browser.loadURI(uri);
-            if (null === window.content && browser.hasOwnProperty('_contentWindow')) {
-                window.content = browser._contentWindow;
+            // shortcut is documented in the following url since browser.type = "content-primary" but it seems to fail on firefox 54
+            // https://developer.mozilla.org/en-US/docs/Working_with_windows_in_chrome_code#Accessing_content_documents
+            // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/browser#a-browser.type
+            // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/browser#p-contentWindow
+            // https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/Property/contentWindow
+            if (null === window.content) {
+                // do not use contentWindow.wrappedJSObject, it makes unable to use QueryInterface
+                window.content = browser.contentWindow;
             }
         } catch (ex) {
             /* print error page, if possible */
