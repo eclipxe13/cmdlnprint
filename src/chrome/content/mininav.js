@@ -2,6 +2,7 @@
 
 let gLocked = false;
 
+const STATE_START = Components.interfaces.nsIWebProgressListener.STATE_START;
 const gPrintProgressListener = {
     /**
      * @var nsIWebProgress aWebProgress
@@ -10,7 +11,7 @@ const gPrintProgressListener = {
      * @var nsresult aStatus
      */
     onStateChange: function (aWebProgress, aRequest, aStateFlags, aStatus) {
-        if (aStateFlags & STATE_STOP) {
+        if (aStateFlags & STATE_START) {
             delayedShutdown();
         }
     },
