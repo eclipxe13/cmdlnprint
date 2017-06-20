@@ -14,7 +14,6 @@ matrix:
               apt:
                   packages:
                       - ca-certificates
-                      - sharutils
                       - poppler-utils
         - env: FF_REQUIRED=45.9.0esr
           addons:
@@ -22,7 +21,6 @@ matrix:
               apt:
                   packages:
                       - ca-certificates
-                      - sharutils
                       - poppler-utils
         - env: FF_REQUIRED=52.0esr
           addons:
@@ -30,7 +28,6 @@ matrix:
               apt:
                   packages:
                       - ca-certificates
-                      - sharutils
                       - poppler-utils
         - env: FF_REQUIRED=52.0.1esr
           addons:
@@ -38,7 +35,6 @@ matrix:
               apt:
                   packages:
                       - ca-certificates
-                      - sharutils
                       - poppler-utils
         - env: FF_REQUIRED=52.0.2esr
           addons:
@@ -46,7 +42,6 @@ matrix:
               apt:
                   packages:
                       - ca-certificates
-                      - sharutils
                       - poppler-utils
         - env: FF_REQUIRED=52.1.0esr
           addons:
@@ -54,7 +49,6 @@ matrix:
               apt:
                   packages:
                       - ca-certificates
-                      - sharutils
                       - poppler-utils
         - env: FF_REQUIRED=52.1.1esr
           addons:
@@ -62,7 +56,6 @@ matrix:
               apt:
                   packages:
                       - ca-certificates
-                      - sharutils
                       - poppler-utils
         - env: FF_REQUIRED=52.1.2esr
           addons:
@@ -70,7 +63,6 @@ matrix:
               apt:
                   packages:
                       - ca-certificates
-                      - sharutils
                       - poppler-utils
         - env: FF_REQUIRED=52.2.0esr
           addons:
@@ -78,7 +70,6 @@ matrix:
               apt:
                   packages:
                       - ca-certificates
-                      - sharutils
                       - poppler-utils
 
 before_install:
@@ -98,4 +89,3 @@ script:
     - ls -alh /tmp/output.pdf
     - pdftotext -q -raw -enc Latin1 -nopgbrk /tmp/output.pdf - | tee /tmp/output.txt
     - diff -b -B src/test/assets/expected-output.txt /tmp/output.txt || true
-    - cat /tmp/output.pdf | uuencode output.pdf
