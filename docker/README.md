@@ -69,6 +69,25 @@ creation of Xvfb and use the defined DISPLAY.
 
 See also: http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
 
+## Ubuntu xenial image
+
+The ubuntu image is very alike the Debian image, it allows other build argument:
+
+- FIREFOX_VERSION: As of 2017-06-20 the xenial image contains two different
+  versions of Firefox: 54.0+build3-0ubuntu0.16.04.1 and 45.0.2+build1-0ubuntu1.
+  You can simply set 54 (default) or 45 to select one of those versions since
+  the apt-get install command will put a wildcard at the end of the version.
+
+Other important change is that is uses node and npm from the ubuntu repository
+and not the official one.
+
+In any other spec it sould behave in the same way as the Debian image.
+Including that you have to build the base ubuntu image:
+
+```
+docker build -t cmdlnprint-ubuntu-base ubuntu-base/
+```
+
 # TODO:
 
 - [ ] Remove manual installation of npm when Debian Stretch includes it.
