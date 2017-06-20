@@ -4,25 +4,88 @@ node_js:
 
 env:
     global:
-        - DISPLAY=:99.0
+        - DISPLAY=":99.0"
 
-addons:
-    firefox: "45.0"
-    apt:
-        packages:
-            - ca-certificates
-            - sharutils
+matrix:
+    include:
+        - env: FF_REQUIRED=38.0.1esr
+          addons:
+              firefox: 38.0.1esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
+        - env: FF_REQUIRED=45.9.0esr
+          addons:
+              firefox: 45.9.0esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
+        - env: FF_REQUIRED=52.0esr
+          addons:
+              firefox: 52.0esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
+        - env: FF_REQUIRED=52.0.1esr
+          addons:
+              firefox: 52.0.1esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
+        - env: FF_REQUIRED=52.0.2esr
+          addons:
+              firefox: 52.0.2esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
+        - env: FF_REQUIRED=52.1.0esr
+          addons:
+              firefox: 52.1.0esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
+        - env: FF_REQUIRED=52.1.1esr
+          addons:
+              firefox: 52.1.1esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
+        - env: FF_REQUIRED=52.1.2esr
+          addons:
+              firefox: 52.1.2esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
+        - env: FF_REQUIRED=52.2.0esr
+          addons:
+              firefox: 52.2.0esr
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
 
 before_install:
     - sh -e /etc/init.d/xvfb start
     - npm install -g jpm
 
 before_script:
-    - jpm --version
     - export FFBIN="$(which firefox)"
-    - which firefox && firefox -version && which firefox-bin && firefox-bin -version
+    - cp docker/root/etc/firefox-esr/cmdlnprint.js $(dirname ${FFBIN})/defaults/pref/cmdlnprint.js
+    - jpm --version
+    - which pdftotext && which firefox && firefox -version
 
 script:
-    - jpm xpi -v --addon-dir src/ --dest-dir . && unzip -l cmdlnprint.xpi
-    - jpm run -v --addon-dir src/ --binary "${FFBIN}" --binary-args '-print src/test/assets/sample.html -print-mode pdf -print-file /tmp/test.pdf'
-    - cat /tmp/test.pdf | uuencode test.pdf
+    - jpm xpi -v --addon-dir src/ --dest-dir .
+    - unzip -l cmdlnprint.xpi
+    - jpm run -v --addon-dir src/ --binary "${FFBIN}" --binary-args '-print src/test/assets/sample.html -print-mode pdf -print-file /tmp/output.pdf'
+    - ls -alh /tmp/output.pdf
+    - pdftotext -q -raw -enc Latin1 -nopgbrk /tmp/output.pdf - | tee /tmp/output.txt
+    - diff -b -B src/test/assets/expected-output.txt /tmp/output.txt || true

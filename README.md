@@ -9,6 +9,29 @@ Addon for Firefox to automate printing using command line (silent printing).
 You can print to a normal printer configured at your system or print as a file (pdf, ps or png).
 Get it from Mozilla Addons: <https://addons.mozilla.org/en-US/firefox/addon/cmdlnprint/>
 
+## Compatibility
+
+I'ḿ trying to use only Firefox ESR (Extended Support Release).
+
+Tested on travis-ci: 38.0.1esr, 45.9.0esr, 52.0esr, 52.0.1esr, 52.0.2esr,
+52.1.0esr, 52.1.1esr, 52.1.2esr & 52.2.0esr.
+
+### Why this extension is going to die:
+
+Starting from Firefox 57, WebExtensions will be the only supported extension type.
+Desktop Firefox and Firefox for Android will not load other extension types.
+
+Thanks god we have docker, so we will have this option even when firefox gets
+updated and new versions does not allow this extension.
+
+### Alternatives:
+
+You **must** try: https://github.com/marcopiraccini/electron-printer
+
+The electron-printer solution is based of electron (aka chromium for desktop),
+it does not make the same results as firefox + cmdlnprint and it has a lower set
+of parameters. But is a reasonable headless option with good results.
+
 ## Why this plugin exists?
 
 Sometimes you need to automate the process of printing a webpage to a local

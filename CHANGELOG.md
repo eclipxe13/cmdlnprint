@@ -1,5 +1,17 @@
+# 1.1.2
+- Change to maximum version 52 (ESR)
+- Add .eslintrc.json and .eslintignore and fix code style using eslint
+- Remove error on mininav.js delayedShutdown
+- Change var declarations to let and const
+- Update travis to extract and compare to plain text
+- Update travis to run a matrix of verions:
+  38.0.1esr, 45.9.0esr, 52.0esr, 52.0.1esr, 52.0.2esr,
+  52.1.0esr, 52.1.1esr, 52.1.2esr & 52.2.0esr
+- Update docker version, now is debian:stretch based with firefox 52.2.0
+  and new build instructions
+
 # version 1.1.1
-- From this version, the version will be:
+- From now on, the version will be:
     Major: change in backward compatibility
     Minor: change in plugin (require publish on Mozilla Addons)
     Revision: change that don't require publish on Mozilla Addons but in github master branch

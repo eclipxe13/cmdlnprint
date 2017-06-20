@@ -2,21 +2,17 @@
 
 let cmdlineprint;
 
-function startup(data)
-{
-    cmdlineprint = Components.utils.import("resource://cmdlnprint/components/cmdlnprint.jsm", {});
+function startup(data) {
+    cmdlineprint = Components.utils.import('resource://cmdlnprint/components/cmdlnprint.jsm', {});
     cmdlineprint.startup();
 }
 
-function shutdown(data, reason)
-{
+function shutdown(data, reason) {
     cmdlineprint.shutdown();
 }
 
-function install()
-{
+function install() {
 }
 
-function uninstall()
-{
+function uninstall() {
 }
