@@ -1,3 +1,16 @@
+# 1.2.0
+- This require to upgrade the plugin on mozilla addons
+- Add docker images for ubuntu, this allows local testing on Firefox 54.
+- Fix bug where window.content was not a shortcut of
+  `window.document.getElementById('browser').contentWindow`
+  even when MDN say it.
+- Change meximum version to Firefox 55 (according to test on docker and mozilla suggest)
+- mininav.js: onStateChange will close window on STATE_STOP
+- Cleanup mininav.xul
+- Improve code style and comments on mininav.js
+- Travis: Add Firefox 54.0 and latest but they are still failing, don't know why.
+- Add information of alternative Athena
+
 # 1.1.3
 - Fix bug where nsIPrintSettings::paperSizeType property is not defined.
   Found in debian jessie running Firefox 52.2.0
