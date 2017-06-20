@@ -119,6 +119,9 @@ function saveCanvas(canvas, path) {
     }
 }
 
+/**
+ * This method is call at window.onload event
+ */
 function startup() {
     window.sizeToContent();
     const browser = window.getBrowser();
