@@ -71,6 +71,20 @@ matrix:
                   packages:
                       - ca-certificates
                       - poppler-utils
+        - env: FF_REQUIRED=54.0
+          addons:
+              firefox: 54.0
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
+        - env: FF_REQUIRED=latest
+          addons:
+              firefox: latest
+              apt:
+                  packages:
+                      - ca-certificates
+                      - poppler-utils
 
 before_install:
     - sh -e /etc/init.d/xvfb start
