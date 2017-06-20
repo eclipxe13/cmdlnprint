@@ -257,7 +257,9 @@ function setupOtherPreferences(settings) {
     settings.unwriteableMarginBottom = 0;
     settings.unwriteableMarginLeft = 0;
     if ('yes' === window.arguments[20]) {
-        settings.paperSizeType = settings.kPaperSizeDefined;
+        if ('undefined' !== typeof settings.paperSizeType) {
+            settings.paperSizeType = settings.kPaperSizeDefined;
+        }
         settings.paperSizeUnit = ('in' === window.arguments[21]) ? settings.kPaperSizeInches : settings.kPaperSizeMillimeters;
         settings.paperWidth = parseFloat(window.arguments[22]);
         settings.paperHeight = parseFloat(window.arguments[23]);
