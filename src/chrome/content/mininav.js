@@ -3,6 +3,8 @@
 let gLocked = false;
 
 const STATE_START = Components.interfaces.nsIWebProgressListener.STATE_START;
+const LOCATION_CHANGE_ERROR_PAGE = Components.interfaces.nsIWebProgressListener.LOCATION_CHANGE_ERROR_PAGE;
+
 const gPrintProgressListener = {
     /**
      * @var nsIWebProgress aWebProgress
@@ -40,7 +42,7 @@ const gPrintProgressListener = {
 
 const gBrowserProgressListener = {
     onLocationChange: function (aWebProgress, aRequest, aLocation, aFlags) {
-        if (Components.interfaces.nsIWebProgressListener.LOCATION_CHANGE_ERROR_PAGE & aFlags) {
+        if (aFlags & LOCATION_CHANGE_ERROR_PAGE) {
             // At this point, LOAD_BACKGROUND is set, so from now on, no event will
             // be fired.
             window.setTimeout(onPrintPageLoadComplete, 100);
