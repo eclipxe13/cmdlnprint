@@ -85,6 +85,9 @@ matrix:
                   packages:
                       - ca-certificates
                       - poppler-utils
+    allow_failures:
+        - env: FF_REQUIRED=54.0
+        - env: FF_REQUIRED=latest
 
 before_install:
     - sh -e /etc/init.d/xvfb start
