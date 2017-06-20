@@ -1,6 +1,6 @@
 {
     "name": "cmdlnprint",
-    "version": "1.1.2",
+    "version": "1.1.3",
     "id": "{243cc1ee-c821-4544-aebb-54c44125b9aa}",
     "title": "Command Line Print",
     "description": "$ firefox -print \"URL\"",

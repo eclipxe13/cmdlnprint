@@ -1,3 +1,7 @@
+# 1.1.3
+- Fix bug where nsIPrintSettings::paperSizeType property is not defined.
+  Found in debian jessie running Firefox 52.2.0
+
 # 1.1.2
 - Change to maximum version 52 (ESR)
 - Add .eslintrc.json and .eslintignore and fix code style using eslint
