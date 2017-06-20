@@ -111,13 +111,17 @@ function saveCanvas(canvas, path) {
 }
 
 function startup() {
-    sizeToContent();
-    getBrowser().webProgress.addProgressListener(gBrowserProgressListener, Components.interfaces.nsIWebProgress .NOTIFY_LOCATION);
-    getBrowser().addEventListener('pageshow', onPrintPageShow, false);
+    window.sizeToContent();
+    const browser = window.getBrowser();
+    browser.webProgress.addProgressListener(gBrowserProgressListener, Components.interfaces.nsIWebProgress .NOTIFY_LOCATION);
+    browser.addEventListener('pageshow', onPrintPageShow, false);
     const uri = window.arguments[0];
     if (uri) {
         try {
-            getBrowser().loadURI(uri);
+            browser.loadURI(uri);
+            if (null === window.content && browser.hasOwnProperty('_contentWindow')) {
+                window.content = browser._contentWindow;
+            }
         } catch (ex) {
             /* print error page, if possible */
             window.setTimeout(onPrintPageLoadComplete, 100);
