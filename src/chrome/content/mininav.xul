@@ -14,20 +14,13 @@
         titlepreface=""
         titlemenuseparator="&mainWindow.titlemodifierseparator;">
    <!-- persist="screenX screenY width height sizemode" -->
-  <script type="application/x-javascript">
-<![CDATA[
-
-
-]]>
-  </script>
-  <script type="application/x-javascript" src="mininav.js"/>
-  <browser id="content"
-           type="content-primary"
+  <browser type="content-primary"
+           id="content"
            name="content"
            src="about:blank"
            flex="1"
            disablehistory="true"
            style="min-height : 600px; min-width : 1200px;"
-           onclick="event.preventDefault();"
-           />
+           onclick="event.preventDefault();"/>
+   <script type="application/x-javascript" src="mininav.js"/>
 </window>
