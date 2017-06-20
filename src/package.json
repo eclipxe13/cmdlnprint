@@ -11,7 +11,7 @@
     "main": "index.js",
     "icon": "chrome://cmdlnprint/skin/cmdlnprint.png",
     "engines": {
-        "firefox": ">=38.0 <=52.*"
+        "firefox": ">=38.0 <=55.*"
     },
     "permissions": {
         "multiprocess": true
