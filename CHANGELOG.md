@@ -1,3 +1,6 @@
+# 2019-10-04: Archived project
+- This project has been deprecated and archived. All contents are available on previous commits.
+
 # 1.2.0
 - This require to upgrade the plugin on mozilla addons
 - Add docker images for ubuntu, this allows local testing on Firefox 54.

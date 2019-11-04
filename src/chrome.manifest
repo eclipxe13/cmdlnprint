@@ -1,4 +1,0 @@
-resource    cmdlnprint .
-content     cmdlnprint chrome/content/
-locale      cmdlnprint en-US chrome/locale/en-US/
-skin        cmdlnprint classic/1.0 chrome/skin/cmdlnprint.png
